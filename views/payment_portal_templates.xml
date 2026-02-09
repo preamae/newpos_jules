@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="redirect_3d_form">
+        <html>
+            <head>
+                <title>3D Secure Yönlendirme</title>
+            </head>
+            <body onload="document.forms['redirect_form'].submit();">
+                <div style="text-align: center; margin-top: 50px;">
+                    <h2>3D Secure sayfasına yönlendiriliyorsunuz...</h2>
+                    <p>Lütfen bekleyiniz, sayfa otomatik olarak yönlenecektir.</p>
+                </div>
+                <form name="redirect_form" t-att-action="action_url" method="POST">
+                    <t t-foreach="data" t-as="item">
+                        <input type="hidden" t-att-name="item" t-att-value="data[item]"/>
+                    </t>
+                    <noscript>
+                        <div style="text-align: center;">
+                            <p>Tarayıcınız otomatik yönlendirmeyi desteklemiyor olabilir.</p>
+                            <input type="submit" value="Devam Etmek İçin Tıklayın" class="btn btn-primary"/>
+                        </div>
+                    </noscript>
+                </form>
+            </body>
+        </html>
+    </template>
+
+    <template id="payment_error">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="alert alert-danger shadow">
+                                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> Ödeme Hatası</h4>
+                                <hr/>
+                                <p t-esc="error_message"/>
+                                <div class="mt-4">
+                                    <a href="/shop/payment" class="btn btn-outline-danger">
+                                        <i class="fa fa-chevron-left"></i> Ödeme Sayfasına Geri Dön
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="payment_page">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h4 class="mb-0">Kart Bilgileri</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/payment/turkey_pos/process" method="POST">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="reference" t-att-value="reference"/>
+                                        <input type="hidden" name="amount" t-att-value="amount"/>
+                                        <input type="hidden" name="provider_id" t-att-value="providers[0].id if providers else ''"/>
+
+                                        <div class="form-group mb-3">
+                                            <label for="card_number">Kart Numarası</label>
+                                            <input type="text" name="card_number" id="card_number" class="form-control" placeholder="0000 0000 0000 0000" required="required"/>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label for="expiry_month">Ay</label>
+                                                    <select name="expiry_month" id="expiry_month" class="form-control" required="required">
+                                                        <t t-foreach="range(1, 13)" t-as="month">
+                                                            <option t-att-value="str(month).zfill(2)" t-esc="str(month).zfill(2)"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label for="expiry_year">Yıl</label>
+                                                    <select name="expiry_year" id="expiry_year" class="form-control" required="required">
+                                                        <t t-foreach="range(datetime.datetime.now().year % 100, datetime.datetime.now().year % 100 + 11)" t-as="year">
+                                                            <option t-att-value="str(year).zfill(2)" t-esc="str(year).zfill(2)"/>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group mb-3">
+                                                    <label for="cvv">CVV</label>
+                                                    <input type="text" name="cvv" id="cvv" class="form-control" placeholder="123" maxlength="4" required="required"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4" t-if="installment_options">
+                                            <label for="installment_count">Taksit Seçenekleri</label>
+                                            <div class="list-group">
+                                                <label class="list-group-item">
+                                                    <input type="radio" name="installment_count" value="1" checked="checked"/> Tek Çekim
+                                                    <span class="float-end" t-esc="amount" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                </label>
+                                                <!-- Taksitler JS ile yüklenebilir veya buradan döngüye sokulabilir -->
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success btn-lg w-100 mt-3 shadow-sm">
+                                            <i class="fa fa-lock"></i> Güvenli Ödeme Yap
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Sipariş Özeti</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Referans:</span>
+                                        <strong t-esc="reference"/>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Toplam Tutar:</span>
+                                        <strong class="text-primary" t-esc="amount" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-muted small"><i class="fa fa-shield"></i> 256-bit SSL ile korunmaktadır.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

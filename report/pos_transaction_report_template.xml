@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- POS İşlem Raporu Template -->
+        <template id="pos_transaction_report">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="text-center">POS İşlem Raporu</h2>
+                                <p class="text-center text-muted">
+                                    Rapor Tarihi: <t t-esc="format_date(env, DateTime.now())"/>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>Toplam İşlem</h5>
+                                        <h3 t-esc="total_transactions"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>Toplam Tutar</h5>
+                                        <h3 t-esc="total_amount" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>Toplam İade</h5>
+                                        <h3 t-esc="total_refunds" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>Sağlayıcı Bazlı İstatistikler</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sağlayıcı</th>
+                                            <th class="text-right">İşlem Sayısı</th>
+                                            <th class="text-right">Tutar</th>
+                                            <th class="text-right">İade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="provider_stats.items()" t-as="stat">
+                                            <td t-esc="stat[0]"/>
+                                            <td class="text-right" t-esc="stat[1]['count']"/>
+                                            <td class="text-right" t-esc="stat[1]['amount']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                            <td class="text-right" t-esc="stat[1]['refunds']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>İşlem Detayları</h4>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>İşlem No</th>
+                                            <th>Tarih</th>
+                                            <th>Sağlayıcı</th>
+                                            <th>Müşteri</th>
+                                            <th class="text-right">Tutar</th>
+                                            <th>Taksit</th>
+                                            <th>Durum</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="docs" t-as="tx">
+                                            <td t-esc="tx.reference"/>
+                                            <td t-esc="format_datetime(env, tx.create_date)"/>
+                                            <td t-esc="tx.provider_id.name"/>
+                                            <td t-esc="tx.partner_id.name"/>
+                                            <td class="text-right" t-esc="tx.amount" t-options="{'widget': 'monetary', 'display_currency': tx.currency_id}"/>
+                                            <td class="text-center" t-esc="tx.installment_count"/>
+                                            <td>
+                                                <span t-if="tx.state == 'done'" class="badge badge-success">Başarılı</span>
+                                                <span t-if="tx.state == 'error'" class="badge badge-danger">Hata</span>
+                                                <span t-if="tx.state == 'pending'" class="badge badge-warning">Bekliyor</span>
+                                                <span t-if="tx.state == 'cancel'" class="badge badge-secondary">İptal</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- POS Günlük Rapor Template -->
+        <template id="pos_daily_report">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="text-center">POS Günlük Raporu</h2>
+                                <h4 class="text-center" t-esc="date"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>Toplam İşlem</h5>
+                                        <h3 t-esc="total_transactions"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>Toplam Tutar</h5>
+                                        <h3 t-esc="total_amount" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5>Toplam İade</h5>
+                                        <h3 t-esc="total_refunds" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>Sağlayıcı Bazlı İstatistikler</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sağlayıcı</th>
+                                            <th class="text-right">İşlem Sayısı</th>
+                                            <th class="text-right">Tutar</th>
+                                            <th class="text-right">İade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="provider_stats.items()" t-as="stat">
+                                            <td t-esc="stat[0]"/>
+                                            <td class="text-right" t-esc="stat[1]['count']"/>
+                                            <td class="text-right" t-esc="stat[1]['amount']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                            <td class="text-right" t-esc="stat[1]['refunds']" t-options="{'widget': 'monetary', 'display_currency': env.company.currency_id}"/>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>İşlem Detayları</h4>
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>İşlem No</th>
+                                            <th>Sağlayıcı</th>
+                                            <th>Müşteri</th>
+                                            <th class="text-right">Tutar</th>
+                                            <th>Taksit</th>
+                                            <th>Durum</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="transactions" t-as="tx">
+                                            <td t-esc="tx.reference"/>
+                                            <td t-esc="tx.provider_id.name"/>
+                                            <td t-esc="tx.partner_id.name"/>
+                                            <td class="text-right" t-esc="tx.amount" t-options="{'widget': 'monetary', 'display_currency': tx.currency_id}"/>
+                                            <td class="text-center" t-esc="tx.installment_count"/>
+                                            <td>
+                                                <span t-if="tx.state == 'done'" class="badge badge-success">Başarılı</span>
+                                                <span t-if="tx.state == 'error'" class="badge badge-danger">Hata</span>
+                                                <span t-if="tx.state == 'pending'" class="badge badge-warning">Bekliyor</span>
+                                                <span t-if="tx.state == 'cancel'" class="badge badge-secondary">İptal</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- POS Mutabakat Rapor Template -->
+        <template id="pos_reconciliation_report">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2 class="text-center">POS Mutabakat Raporu</h2>
+                                    <h4 class="text-center" t-esc="doc.name"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt16">
+                                <div class="col-6">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td><strong>Sağlayıcı:</strong></td>
+                                            <td t-esc="doc.provider_id.name"/>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Dönem:</strong></td>
+                                            <td>
+                                                <span t-esc="doc.date_start"/> - <span t-esc="doc.date_end"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Durum:</strong></td>
+                                            <td>
+                                                <span t-if="doc.state == 'draft'" class="badge badge-secondary">Taslak</span>
+                                                <span t-if="doc.state == 'in_progress'" class="badge badge-warning">İşleniyor</span>
+                                                <span t-if="doc.state == 'done'" class="badge badge-success">Tamamlandı</span>
+                                                <span t-if="doc.state == 'cancelled'" class="badge badge-danger">İptal Edildi</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <h4>Özet</h4>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr class="table-primary">
+                                                <th>Toplam İşlem</th>
+                                                <th class="text-right">Toplam Tutar</th>
+                                                <th class="text-right">Komisyon</th>
+                                                <th class="text-right">Net Tutar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center" t-esc="doc.total_transaction_count"/>
+                                                <td class="text-right" t-esc="doc.total_amount" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                <td class="text-right" t-esc="doc.total_commission" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                                <td class="text-right" t-esc="doc.net_amount" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt32">
+                                <div class="col-12">
+                                    <h4>Sipariş Detayları</h4>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Sipariş No</th>
+                                                <th>Tarih</th>
+                                                <th>Tutar</th>
+                                                <th>Durum</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="doc.order_ids" t-as="order">
+                                                <td t-esc="order.name"/>
+                                                <td t-esc="order.date"/>
+                                                <td class="text-right" t-esc="order.amount" t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/>
+                                                <td>
+                                                    <span t-if="order.state == 'done'" class="badge badge-success">Tamamlandı</span>
+                                                    <span t-if="order.state == 'refunded'" class="badge badge-warning">İade Edildi</span>
+                                                    <span t-if="order.state == 'cancelled'" class="badge badge-danger">İptal Edildi</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="page-break-after:always;"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

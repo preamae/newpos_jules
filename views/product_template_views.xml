@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Ürün Sayfası Taksit Sekmesi -->
+        <template id="product_installment_tab" inherit_id="website_sale.product" name="Ürün Taksit Sekmesi">
+            <xpath expr="//div[@id='product_details']/t[@t-call='website_sale.product_attributes']" position="after">
+                <div class="mt-4" id="product_installments_section">
+                    <t t-call="turkey_pos_payment.product_installments"/>
+                </div>
+            </xpath>
+        </template>
+
+        <!-- Taksit Tablosu Template -->
+        <template id="product_installments" name="Ürün Taksit Tablosu">
+            <div class="card" t-if="product and product.sale_ok">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fa fa-credit-card"></i> Taksit Seçenekleri
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="installment-loading" class="text-center py-3">
+                        <i class="fa fa-spinner fa-spin"></i> Taksit seçenekleri yükleniyor...
+                    </div>
+                    <div id="installment-content" style="display:none;">
+                        <div class="alert alert-info" id="installment-info">
+                            Kart numaranızı girerek taksit seçeneklerini görüntüleyebilirsiniz.
+                        </div>
+                        <div id="installment-table-container"></div>
+                    </div>
+                    <div id="installment-error" class="alert alert-warning" style="display:none;"></div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Sepet Özeti Taksit Bilgisi -->
+        <template id="cart_installment_info" inherit_id="website_sale.cart_summary">
+            <xpath expr="//div[@id='cart_total']" position="after">
+                <div class="mt-3" id="cart_installment_summary" t-if="website_sale_order and website_sale_order.amount_total > 0">
+                    <t t-call="turkey_pos_payment.cart_installment_options"/>
+                </div>
+            </xpath>
+        </template>
+
+        <!-- Sepet Taksit Özeti Template -->
+        <template id="cart_installment_options" name="Sepet Taksit Özeti">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fa fa-calculator"></i> Taksit Hesaplama
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="cart-card-number">Kart Numarası:</label>
+                        <input type="text" class="form-control" id="cart-card-number" 
+                               placeholder="1234 5678 9012 3456" maxlength="19"/>
+                        <small class="form-text text-muted" id="cart-card-brand"></small>
+                    </div>
+                    <div id="cart-installment-options" class="mt-3"></div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Ödeme Sayfası Banka ve Taksit Seçimi -->
+        <template id="payment_installment_selection" inherit_id="payment.payment_checkout">
+            <xpath expr="//t[@t-call='payment.submit_button']" position="before">
+                <div class="card mt-3 mb-3" id="payment-pos-options" 
+                     t-if="providers and any(p.code in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'] for p in providers)">
+                    <t t-call="turkey_pos_payment.payment_pos_form"/>
+                </div>
+            </xpath>
+        </template>
+
+        <!-- Ödeme POS Formu -->
+        <template id="payment_pos_form" name="Ödeme POS Formu">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Banka ve Taksit Seçimi</h5>
+            </div>
+            <div class="card-body">
+                <!-- Kart Bilgileri -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="pos-card-number">Kart Numarası *</label>
+                        <input type="text" class="form-control" id="pos-card-number" 
+                               name="card_number" placeholder="1234 5678 9012 3456" 
+                               maxlength="19" required="1"/>
+                        <div id="pos-card-brand" class="mt-1"></div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="pos-card-expiry">Son Kullanma *</label>
+                        <input type="text" class="form-control" id="pos-card-expiry" 
+                               name="card_expiry" placeholder="AA/YY" maxlength="5" required="1"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="pos-card-cvv">CVV *</label>
+                        <input type="text" class="form-control" id="pos-card-cvv" 
+                               name="card_cvv" placeholder="123" maxlength="4" required="1"/>
+                    </div>
+                </div>
+
+                <!-- Banka Seçimi -->
+                <div class="form-group mb-3">
+                    <label for="pos-bank-selection">Banka Seçimi</label>
+                    <select class="form-control" id="pos-bank-selection" name="provider_id">
+                        <option value="">Banka Seçiniz</option>
+                        <t t-foreach="providers.filtered(lambda p: p.code in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])" t-as="provider">
+                            <option t-att-value="provider.id" t-att-data-code="provider.code">
+                                <t t-esc="provider.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+
+                <!-- Taksit Seçimi -->
+                <div class="form-group mb-3" id="pos-installment-group" style="display:none;">
+                    <label for="pos-installment-count">Taksit Seçimi</label>
+                    <select class="form-control" id="pos-installment-count" name="installment_count">
+                        <option value="1">Tek Çekim</option>
+                    </select>
+                    <div id="pos-installment-details" class="mt-2 alert alert-info" style="display:none;"></div>
+                </div>
+
+                <!-- Taksit Farkı Uyarısı -->
+                <div class="alert alert-warning" id="pos-installment-fee-warning" style="display:none;">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <strong>Taksit Farkı:</strong> Seçtiğiniz taksit seçeneği için <span id="pos-fee-amount">0.00</span> TL ek ücret eklenecektir.
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

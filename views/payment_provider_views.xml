@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Ödeme Sağlayıcı Form Görünümü -->
+        <record id="view_payment_provider_form_turkey_pos" model="ir.ui.view">
+            <field name="name">payment.provider.form.turkey.pos</field>
+            <field name="model">payment.provider</field>
+            <field name="inherit_id" ref="payment.payment_provider_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='provider_credentials']" position="after">
+                    <group string="Türkiye POS Ayarları" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="gateway_type"/>
+                        <field name="gateway_id"/>
+                        <field name="hash_algorithm"/>
+                    </group>
+                    
+                    <group string="API Bilgileri" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="api_username"/>
+                        <field name="api_password" password="True"/>
+                        <field name="api_client_id"/>
+                        <field name="api_merchant_id"/>
+                        <field name="api_store_key" password="True"/>
+                        <field name="api_provision_user"/>
+                        <field name="api_terminal_id"/>
+                    </group>
+                    
+                    <group string="3D Secure Ayarları" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="use_3d_secure"/>
+                        <field name="force_3d_secure"/>
+                        <field name="allow_non_secure"/>
+                    </group>
+                    
+                    <group string="Taksit Ayarları" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="enable_installments"/>
+                        <field name="max_installment_count"/>
+                        <field name="min_amount_for_installment"/>
+                    </group>
+                    
+                    <group string="API URL'leri" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="api_url_test"/>
+                        <field name="api_url_production"/>
+                        <field name="api_3d_url_test"/>
+                        <field name="api_3d_url_production"/>
+                    </group>
+                    
+                    <group string="İade/İptal Ayarları" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="allow_refund"/>
+                        <field name="allow_cancel"/>
+                        <field name="refund_time_limit_days"/>
+                    </group>
+                    
+                    <group string="Gelişmiş Ayarlar" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="timeout_seconds"/>
+                        <field name="retry_count"/>
+                        <field name="log_requests"/>
+                    </group>
+                    
+                    <group string="İstatistikler" invisible="code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <field name="transaction_count" readonly="1"/>
+                        <field name="total_volume" readonly="1"/>
+                        <field name="success_rate" readonly="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Ödeme Sağlayıcı Ağaç Görünümü -->
+        <record id="view_payment_provider_tree_turkey_pos" model="ir.ui.view">
+            <field name="name">payment.provider.tree.turkey.pos</field>
+            <field name="model">payment.provider</field>
+            <field name="inherit_id" ref="payment.payment_provider_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="gateway_type" optional="hide"/>
+                    <field name="use_3d_secure" optional="hide"/>
+                    <field name="enable_installments" optional="hide"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Ödeme Sağlayıcı Filtre -->
+        <record id="view_payment_provider_search_turkey_pos" model="ir.ui.view">
+            <field name="name">payment.provider.search.turkey.pos</field>
+            <field name="model">payment.provider</field>
+            <field name="inherit_id" ref="payment.payment_provider_search"/>
+            <field name="arch" type="xml">
+                <filter name="inactive" position="after">
+                    <separator/>
+                    <filter string="Türkiye POS" name="turkey_pos" 
+                            domain="[('code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]"/>
+                    <filter string="3D Secure Aktif" name="3d_active" domain="[('use_3d_secure', '=', True)]"/>
+                    <filter string="Taksit Aktif" name="installment_active" domain="[('enable_installments', '=', True)]"/>
+                    <group expand="0" string="Grupla">
+                        <filter string="Gateway Tipi" name="group_by_gateway" context="{'group_by': 'gateway_type'}"/>
+                    </group>
+                </filter>
+            </field>
+        </record>
+
+        <!-- Ödeme Sağlayıcı Eylem -->
+        <record id="action_payment_provider_turkey_pos" model="ir.actions.act_window">
+            <field name="name">Türkiye POS Sağlayıcıları</field>
+            <field name="res_model">payment.provider</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]</field>
+            <field name="context">{'default_code': 'akbank'}</field>
+        </record>
+
+        <!-- Menü Öğesi -->
+        <menuitem id="menu_payment_provider_turkey_pos" 
+                  name="Türkiye POS Sağlayıcıları"
+                  parent="payment.payment_menu"
+                  action="action_payment_provider_turkey_pos"
+                  sequence="20"/>
+    </data>
+</odoo>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Banka Gateway Form Görünümü -->
+        <record id="view_bank_gateway_form" model="ir.ui.view">
+            <field name="name">bank.gateway.form</field>
+            <field name="model">bank.gateway</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_view_providers" string="Sağlayıcıları Görüntüle" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_providers" type="object" class="oe_stat_button" icon="fa-credit-card">
+                                <field name="provider_count" widget="statinfo" string="Sağlayıcılar"/>
+                            </button>
+                        </div>
+                        <field name="bank_logo" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Gateway Adı"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Temel Bilgiler">
+                                <field name="code"/>
+                                <field name="bank_name"/>
+                                <field name="gateway_type"/>
+                                <field name="sequence"/>
+                                <field name="active"/>
+                            </group>
+                            <group string="İstatistikler">
+                                <field name="transaction_count"/>
+                                <field name="success_rate" widget="progressbar"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Desteklenen Özellikler">
+                                <group>
+                                    <group string="Ödeme Tipleri">
+                                        <field name="support_3d_secure"/>
+                                        <field name="support_3d_pay"/>
+                                        <field name="support_non_secure"/>
+                                        <field name="support_3d_host"/>
+                                        <field name="support_recurring"/>
+                                    </group>
+                                    <group string="İşlem Tipleri">
+                                        <field name="support_refund"/>
+                                        <field name="support_cancel"/>
+                                        <field name="support_status_query"/>
+                                        <field name="support_order_history"/>
+                                        <field name="support_partial_refund"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="API URL'leri">
+                                <group>
+                                    <group string="Test Ortamı">
+                                        <field name="test_api_url"/>
+                                        <field name="test_3d_url"/>
+                                        <field name="test_query_url"/>
+                                    </group>
+                                    <group string="Canlı Ortam">
+                                        <field name="production_api_url"/>
+                                        <field name="production_3d_url"/>
+                                        <field name="production_query_url"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Desteklenen Kartlar">
+                                <field name="supported_card_brands">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Dokümantasyon">
+                                <group>
+                                    <field name="documentation_url" widget="url"/>
+                                    <field name="technical_contact"/>
+                                </group>
+                                <field name="description"/>
+                                <field name="setup_instructions"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Banka Gateway Ağaç Görünümü -->
+        <record id="view_bank_gateway_tree" model="ir.ui.view">
+            <field name="name">bank.gateway.tree</field>
+            <field name="model">bank.gateway</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="bank_name"/>
+                    <field name="gateway_type"/>
+                    <field name="support_3d_secure"/>
+                    <field name="support_refund"/>
+                    <field name="provider_count"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Banka Gateway Filtre -->
+        <record id="view_bank_gateway_search" model="ir.ui.view">
+            <field name="name">bank.gateway.search</field>
+            <field name="model">bank.gateway</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="bank_name"/>
+                    <field name="code"/>
+                    <filter string="Aktif" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Pasif" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="3D Secure Destekleyen" name="3d_secure" domain="[('support_3d_secure', '=', True)]"/>
+                    <filter string="İade Destekleyen" name="refund" domain="[('support_refund', '=', True)]"/>
+                    <group expand="0" string="Grupla">
+                        <filter string="Gateway Tipi" name="group_by_type" context="{'group_by': 'gateway_type'}"/>
+                        <filter string="Banka" name="group_by_bank" context="{'group_by': 'bank_name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Banka Gateway Eylem -->
+        <record id="action_bank_gateway" model="ir.actions.act_window">
+            <field name="name">Banka Gateway'leri</field>
+            <field name="res_model">bank.gateway</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Kart Markası Form Görünümü -->
+        <record id="view_bank_card_brand_form" model="ir.ui.view">
+            <field name="name">bank.card.brand.form</field>
+            <field name="model">bank.card.brand</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="logo" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="BIN Prefixleri">
+                            <field name="bin_prefixes" placeholder="Her satıra bir BIN prefixi yazın"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Kart Markası Ağaç Görünümü -->
+        <record id="view_bank_card_brand_tree" model="ir.ui.view">
+            <field name="name">bank.card.brand.tree</field>
+            <field name="model">bank.card.brand</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Kart Markası Eylem -->
+        <record id="action_bank_card_brand" model="ir.actions.act_window">
+            <field name="name">Kart Markaları</field>
+            <field name="res_model">bank.card.brand</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menü Öğeleri -->
+        <menuitem id="menu_turkey_pos_root" 
+                  name="Türkiye POS"
+                  parent="payment.payment_menu"
+                  sequence="10"/>
+
+        <menuitem id="menu_bank_gateway" 
+                  name="Banka Gateway'leri"
+                  parent="menu_turkey_pos_root"
+                  action="action_bank_gateway"
+                  sequence="10"/>
+
+        <menuitem id="menu_bank_card_brand" 
+                  name="Kart Markaları"
+                  parent="menu_turkey_pos_root"
+                  action="action_bank_card_brand"
+                  sequence="20"/>
+    </data>
+</odoo>

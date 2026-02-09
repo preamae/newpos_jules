@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- İade Sihirbazı Form Görünümü -->
+        <record id="view_pos_refund_wizard_form" model="ir.ui.view">
+            <field name="name">pos.refund.wizard.form</field>
+            <field name="model">pos.refund.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group string="İşlem Bilgileri">
+                                <field name="transaction_id" readonly="1"/>
+                                <field name="provider_id" readonly="1"/>
+                                <field name="original_amount" readonly="1"/>
+                                <field name="already_refunded" readonly="1"/>
+                                <field name="max_amount" readonly="1"/>
+                            </group>
+                            <group string="İade Bilgileri">
+                                <field name="refund_amount"/>
+                                <field name="currency_id" readonly="1"/>
+                                <field name="refund_reason"/>
+                            </group>
+                        </group>
+                        <field name="refund_note" placeholder="İade notu..."/>
+                        <group>
+                            <field name="confirm_refund"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_confirm_refund" string="İade Yap" 
+                                type="object" class="oe_highlight"/>
+                        <button string="İptal" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- İade Sihirbazı Eylem -->
+        <record id="action_pos_refund_wizard" model="ir.actions.act_window">
+            <field name="name">İade İşlemi</field>
+            <field name="res_model">pos.refund.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- İptal Sihirbazı Form Görünümü -->
+        <record id="view_pos_cancel_wizard_form" model="ir.ui.view">
+            <field name="name">pos.cancel.wizard.form</field>
+            <field name="model">pos.cancel.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="alert alert-warning" role="alert" invisible="not warning_message">
+                            <field name="warning_message" readonly="1"/>
+                        </div>
+                        <group>
+                            <group string="İşlem Bilgileri">
+                                <field name="transaction_id" readonly="1"/>
+                                <field name="provider_id" readonly="1"/>
+                                <field name="order_id" readonly="1"/>
+                                <field name="amount" readonly="1"/>
+                                <field name="payment_date" readonly="1"/>
+                            </group>
+                            <group string="İptal Nedeni">
+                                <field name="cancel_reason"/>
+                            </group>
+                        </group>
+                        <field name="cancel_note" placeholder="İptal notu..."/>
+                        <group>
+                            <field name="confirm_cancel"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_confirm_cancel" string="İptal Et" 
+                                type="object" class="oe_highlight"/>
+                        <button string="Vazgeç" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- İptal Sihirbazı Eylem -->
+        <record id="action_pos_cancel_wizard" model="ir.actions.act_window">
+            <field name="name">İptal İşlemi</field>
+            <field name="res_model">pos.cancel.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Durum Sorgulama Sihirbazı Form Görünümü -->
+        <record id="view_pos_status_query_wizard_form" model="ir.ui.view">
+            <field name="name">pos.status.query.wizard.form</field>
+            <field name="model">pos.status.query.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="query_type"/>
+                        </group>
+                        <group invisible="query_type != 'transaction'">
+                            <field name="transaction_id"/>
+                        </group>
+                        <group invisible="query_type != 'order'">
+                            <field name="order_id"/>
+                        </group>
+                        <group invisible="query_type != 'date_range'">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="provider_id"/>
+                        </group>
+                        <group invisible="result_count == 0">
+                            <field name="result_count" readonly="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_query" string="Sorgula" 
+                                type="object" class="oe_highlight"/>
+                        <button string="Kapat" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Durum Sorgulama Sihirbazı Eylem -->
+        <record id="action_pos_status_query_wizard" model="ir.actions.act_window">
+            <field name="name">Durum Sorgula</field>
+            <field name="res_model">pos.status.query.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

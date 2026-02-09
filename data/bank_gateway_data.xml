@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Akbank POS -->
+        <record id="gateway_akbank" model="bank.gateway">
+            <field name="name">Akbank POS</field>
+            <field name="code">akbank</field>
+            <field name="bank_name">Akbank</field>
+            <field name="gateway_type">akbank</field>
+            <field name="sequence">10</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="test_api_url">https://www.sanalakpos.com/servlet/cc5ApiServer</field>
+            <field name="test_3d_url">https://www.sanalakpos.com/servlet/est3Dgate</field>
+            <field name="production_api_url">https://www.sanalakpos.com/servlet/cc5ApiServer</field>
+            <field name="production_3d_url">https://www.sanalakpos.com/servlet/est3Dgate</field>
+            <field name="documentation_url">https://www.akbank.com/tr/sayfalar/entegrasyon-dokumanlari.aspx</field>
+        </record>
+
+        <!-- Garanti Virtual POS -->
+        <record id="gateway_garanti" model="bank.gateway">
+            <field name="name">Garanti Virtual POS</field>
+            <field name="code">garanti</field>
+            <field name="bank_name">Garanti BBVA</field>
+            <field name="gateway_type">garanti</field>
+            <field name="sequence">20</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_recurring">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="support_partial_refund">True</field>
+            <field name="test_api_url">https://sanalposprovtest.garanti.com.tr/VPServlet</field>
+            <field name="test_3d_url">https://sanalposprovtest.garanti.com.tr/servlet/gt3dengine</field>
+            <field name="production_api_url">https://sanalposprov.garanti.com.tr/VPServlet</field>
+            <field name="production_3d_url">https://sanalposprov.garanti.com.tr/servlet/gt3dengine</field>
+            <field name="documentation_url">https://www.garantibbva.com.tr/kurumsal_sayfalar/pos_eklentileri.page</field>
+        </record>
+
+        <!-- Asseco EST -->
+        <record id="gateway_est" model="bank.gateway">
+            <field name="name">Asseco EST</field>
+            <field name="code">est</field>
+            <field name="bank_name">İş Bankası, Ziraat, Halkbank, TEB, Şekerbank, Finansbank</field>
+            <field name="gateway_type">est</field>
+            <field name="sequence">30</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_3d_host">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_recurring">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://entegrasyon.asseco-see.com.tr/fim/api</field>
+            <field name="test_3d_url">https://entegrasyon.asseco-see.com.tr/fim/est3Dgate</field>
+            <field name="production_api_url">https://www.sanalpos.com.tr/fim/api</field>
+            <field name="production_3d_url">https://www.sanalpos.com.tr/fim/est3Dgate</field>
+            <field name="documentation_url">https://www.asseco-see.com.tr/tr/urunler/odeme-sistemleri</field>
+        </record>
+
+        <!-- Asseco EST V3 -->
+        <record id="gateway_est_v3" model="bank.gateway">
+            <field name="name">Asseco EST V3 (SHA-512)</field>
+            <field name="code">est_v3</field>
+            <field name="bank_name">İş Bankası, Ziraat, Halkbank, TEB, Şekerbank</field>
+            <field name="gateway_type">est_v3</field>
+            <field name="sequence">35</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_3d_host">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_recurring">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://entegrasyon.asseco-see.com.tr/fim/api</field>
+            <field name="test_3d_url">https://entegrasyon.asseco-see.com.tr/fim/est3Dgate</field>
+            <field name="production_api_url">https://www.sanalpos.com.tr/fim/api</field>
+            <field name="production_3d_url">https://www.sanalpos.com.tr/fim/est3Dgate</field>
+        </record>
+
+        <!-- YKB PosNet -->
+        <record id="gateway_posnet" model="bank.gateway">
+            <field name="name">YKB PosNet</field>
+            <field name="code">posnet</field>
+            <field name="bank_name">Yapı Kredi Bankası</field>
+            <field name="gateway_type">posnet</field>
+            <field name="sequence">40</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_recurring">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://setmpos.ykb.com/PosnetWebService/XML</field>
+            <field name="test_3d_url">https://setmpos.ykb.com/3DSWebService/YKBPaymentService</field>
+            <field name="production_api_url">https://www.posnet.ykb.com/PosnetWebService/XML</field>
+            <field name="production_3d_url">https://www.posnet.ykb.com/3DSWebService/YKBPaymentService</field>
+            <field name="documentation_url">https://www.yapikredi.com.tr/bireysel-bankacilik/internet-subesi/pos-eklentileri</field>
+        </record>
+
+        <!-- QNB Finansbank PayFor -->
+        <record id="gateway_payfor" model="bank.gateway">
+            <field name="name">QNB Finansbank PayFor</field>
+            <field name="code">payfor</field>
+            <field name="bank_name">QNB Finansbank</field>
+            <field name="gateway_type">payfor</field>
+            <field name="sequence">50</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://vpos.qnbfinansbank.com/Gateway/XMLGate.aspx</field>
+            <field name="test_3d_url">https://vpos.qnbfinansbank.com/Gateway/3DHost.aspx</field>
+            <field name="production_api_url">https://vpos.qnbfinansbank.com/Gateway/XMLGate.aspx</field>
+            <field name="production_3d_url">https://vpos.qnbfinansbank.com/Gateway/3DHost.aspx</field>
+            <field name="documentation_url">https://www.qnbfinansbank.com/pos-eklentileri</field>
+        </record>
+
+        <!-- Denizbank İnterPos -->
+        <record id="gateway_interpos" model="bank.gateway">
+            <field name="name">Denizbank İnterPos</field>
+            <field name="code">interpos</field>
+            <field name="bank_name">Denizbank</field>
+            <field name="gateway_type">interpos</field>
+            <field name="sequence">60</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://test.inter-vpos.com.tr/mpi/Default.aspx</field>
+            <field name="test_3d_url">https://test.inter-vpos.com.tr/mpi/3DHost.aspx</field>
+            <field name="production_api_url">https://inter-vpos.com.tr/mpi/Default.aspx</field>
+            <field name="production_3d_url">https://inter-vpos.com.tr/mpi/3DHost.aspx</field>
+            <field name="documentation_url">https://www.denizbank.com/pos-eklentileri</field>
+        </record>
+
+        <!-- PayFlex MPI VPOS -->
+        <record id="gateway_payflex" model="bank.gateway">
+            <field name="name">PayFlex MPI VPOS V4</field>
+            <field name="code">payflex</field>
+            <field name="bank_name">Vakıfbank, İşbank, Ziraat</field>
+            <field name="gateway_type">payflex</field>
+            <field name="sequence">70</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_recurring">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="test_api_url">https://sanalpos-test.vakifbank.com.tr/VPOS/MM/TransactionAPI</field>
+            <field name="test_3d_url">https://sanalpos-test.vakifbank.com.tr/VPOS/MM/3DHost</field>
+            <field name="production_api_url">https://sanalpos.vakifbank.com.tr/VPOS/MM/TransactionAPI</field>
+            <field name="production_3d_url">https://sanalpos.vakifbank.com.tr/VPOS/MM/3DHost</field>
+            <field name="documentation_url">https://www.vakifbank.com.tr/sanal-pos-entegrasyon.aspx</field>
+        </record>
+
+        <!-- PayFlex Common Payment -->
+        <record id="gateway_payflex_cp" model="bank.gateway">
+            <field name="name">PayFlex Common Payment V4</field>
+            <field name="code">payflex_cp</field>
+            <field name="bank_name">Vakıfbank, İşbank, Ziraat</field>
+            <field name="gateway_type">payflex_cp</field>
+            <field name="sequence">75</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_3d_host">True</field>
+            <field name="test_api_url">https://cpay-test.halkbank.com.tr/CPay/Secure3DHost</field>
+            <field name="test_3d_url">https://cpay-test.halkbank.com.tr/CPay/Secure3DHost</field>
+            <field name="production_api_url">https://cpay.halkbank.com.tr/CPay/Secure3DHost</field>
+            <field name="production_3d_url">https://cpay.halkbank.com.tr/CPay/Secure3DHost</field>
+        </record>
+
+        <!-- Kuveyt Türk POS -->
+        <record id="gateway_kuveyt" model="bank.gateway">
+            <field name="name">Kuveyt Türk POS</field>
+            <field name="code">kuveyt</field>
+            <field name="bank_name">Kuveyt Türk</field>
+            <field name="gateway_type">kuveyt</field>
+            <field name="sequence">80</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="test_api_url">https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home</field>
+            <field name="test_3d_url">https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home/ThreeDModelPayGate</field>
+            <field name="production_api_url">https://boa.kuveytturk.com.tr/sanalposservice/Home</field>
+            <field name="production_3d_url">https://boa.kuveytturk.com.tr/sanalposservice/Home/ThreeDModelPayGate</field>
+            <field name="documentation_url">https://www.kuveytturk.com.tr/pos-entegrasyon</field>
+        </record>
+
+        <!-- Param POS -->
+        <record id="gateway_param" model="bank.gateway">
+            <field name="name">Param POS</field>
+            <field name="code">param</field>
+            <field name="bank_name">Param</field>
+            <field name="gateway_type">param</field>
+            <field name="sequence">90</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://test-dagitec.param.com.tr/turkpos/service.asmx</field>
+            <field name="test_3d_url">https://test-dagitec.param.com.tr/turkpos/service.asmx</field>
+            <field name="production_api_url">https://pos.param.com.tr/turkpos/service.asmx</field>
+            <field name="production_3d_url">https://pos.param.com.tr/turkpos/service.asmx</field>
+            <field name="documentation_url">https://param.com.tr/pos-entegrasyon</field>
+        </record>
+
+        <!-- Tosla POS -->
+        <record id="gateway_tosla" model="bank.gateway">
+            <field name="name">Tosla POS</field>
+            <field name="code">tosla</field>
+            <field name="bank_name">Tosla (AKÖde)</field>
+            <field name="gateway_type">tosla</field>
+            <field name="sequence">100</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_3d_pay">True</field>
+            <field name="support_3d_host">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="support_order_history">True</field>
+            <field name="test_api_url">https://payment.tosla.com.tr/fim/api</field>
+            <field name="test_3d_url">https://payment.tosla.com.tr/fim/est3Dgate</field>
+            <field name="production_api_url">https://payment.tosla.com.tr/fim/api</field>
+            <field name="production_3d_url">https://payment.tosla.com.tr/fim/est3Dgate</field>
+            <field name="documentation_url">https://tosla.com.tr/isletmeler/pos-entegrasyonu</field>
+        </record>
+
+        <!-- Vakıf Katılım POS -->
+        <record id="gateway_vakifkatilim" model="bank.gateway">
+            <field name="name">Vakıf Katılım POS</field>
+            <field name="code">vakifkatilim</field>
+            <field name="bank_name">Vakıf Katılım</field>
+            <field name="gateway_type">vakifkatilim</field>
+            <field name="sequence">110</field>
+            <field name="support_3d_secure">True</field>
+            <field name="support_non_secure">True</field>
+            <field name="support_refund">True</field>
+            <field name="support_cancel">True</field>
+            <field name="support_status_query">True</field>
+            <field name="test_api_url">https://test.pos.spotpos.com/VPOS/MM/TransactionAPI</field>
+            <field name="test_3d_url">https://test.pos.spotpos.com/VPOS/MM/3DHost</field>
+            <field name="production_api_url">https://pos.vakifkatilim.com.tr/VPOS/MM/TransactionAPI</field>
+            <field name="production_3d_url">https://pos.vakifkatilim.com.tr/VPOS/MM/3DHost</field>
+            <field name="documentation_url">https://www.vakifkatilim.com.tr/pos-entegrasyon</field>
+        </record>
+    </data>
+</odoo>

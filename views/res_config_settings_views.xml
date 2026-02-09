@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Ayarlar Form Görünümü -->
+        <record id="view_res_config_settings_turkey_pos" model="ir.ui.view">
+            <field name="name">res.config.settings.turkey.pos</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="payment.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]/div[@id='payment_provider_install']" position="after">
+                    <div id="turkey_pos_settings">
+                        <h2>Türkiye POS Ayarları</h2>
+                        <div class="row mt16 o_settings_container" name="turkey_pos_container">
+                            <!-- Varsayılan Sağlayıcı -->
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">Varsayılan POS Sağlayıcısı</span>
+                                    <div class="text-muted">
+                                        Ödeme işlemleri için varsayılan sağlayıcıyı seçin
+                                    </div>
+                                    <div class="content-group">
+                                        <field name="default_pos_provider" class="o_light_label" widget="selection"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3D Secure Ayarları -->
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="pos_force_3d_secure"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="pos_force_3d_secure"/>
+                                    <div class="text-muted">
+                                        Tüm işlemler için 3D Secure zorunlu olsun
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Taksit Ayarları -->
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="pos_enable_installments"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="pos_enable_installments"/>
+                                    <div class="text-muted">
+                                        Taksit seçeneklerini aktif et
+                                    </div>
+                                    <div class="content-group" invisible="not pos_enable_installments">
+                                        <div class="mt16">
+                                            <label for="pos_max_installment_count" class="o_light_label"/>
+                                            <field name="pos_max_installment_count" class="oe_inline"/>
+                                        </div>
+                                        <div class="mt8">
+                                            <label for="pos_min_amount_installment" class="o_light_label"/>
+                                            <field name="pos_min_amount_installment" class="oe_inline"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- İade Ayarları -->
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="pos_auto_refund"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="pos_auto_refund"/>
+                                    <div class="text-muted">
+                                        Otomatik iade işlemlerini aktif et
+                                    </div>
+                                    <div class="content-group" invisible="not pos_auto_refund">
+                                        <div class="mt16">
+                                            <label for="pos_refund_time_limit" class="o_light_label"/>
+                                            <field name="pos_refund_time_limit" class="oe_inline"/> gün
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Güvenlik Ayarları -->
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="pos_log_requests"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="pos_log_requests"/>
+                                    <div class="text-muted">
+                                        API istek ve yanıtlarını logla
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- API Ayarları -->
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">API Ayarları</span>
+                                    <div class="text-muted">
+                                        API bağlantı ayarları
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <label for="pos_timeout_seconds" class="o_light_label"/>
+                                            <field name="pos_timeout_seconds" class="oe_inline"/> saniye
+                                        </div>
+                                        <div class="mt8">
+                                            <label for="pos_retry_count" class="o_light_label"/>
+                                            <field name="pos_retry_count" class="oe_inline"/> deneme
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Eylem Butonları -->
+                        <div class="row mt16">
+                            <div class="col-12">
+                                <button name="action_test_pos_connection" type="object" 
+                                        string="Bağlantıyı Test Et" class="btn btn-primary"/>
+                                <button name="action_sync_bank_gateways" type="object" 
+                                        string="Banka Gateway'lerini Senkronize Et" class="btn btn-secondary ml8"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

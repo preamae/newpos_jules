@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- POS İşlem Raporu -->
+        <record id="action_report_pos_transaction" model="ir.actions.report">
+            <field name="name">POS İşlem Raporu</field>
+            <field name="model">payment.transaction</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">turkey_pos_payment.pos_transaction_report</field>
+            <field name="report_file">turkey_pos_payment.pos_transaction_report</field>
+            <field name="binding_model_id" ref="payment.model_payment_transaction"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- POS Günlük Raporu -->
+        <record id="action_report_pos_daily" model="ir.actions.report">
+            <field name="name">POS Günlük Raporu</field>
+            <field name="model">payment.transaction</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">turkey_pos_payment.pos_daily_report</field>
+            <field name="report_file">turkey_pos_payment.pos_daily_report</field>
+            <field name="print_report_name">'POS Günlük Raporu - %s' % (object.payment_date or '')</field>
+        </record>
+
+        <!-- POS Mutabakat Raporu -->
+        <record id="action_report_pos_reconciliation" model="ir.actions.report">
+            <field name="name">POS Mutabakat Raporu</field>
+            <field name="model">pos.reconciliation</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">turkey_pos_payment.pos_reconciliation_report</field>
+            <field name="report_file">turkey_pos_payment.pos_reconciliation_report</field>
+            <field name="print_report_name">'POS Mutabakat - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_pos_reconciliation"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

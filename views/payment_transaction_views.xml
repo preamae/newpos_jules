@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Ödeme İşlemi Form Görünümü -->
+        <record id="view_payment_transaction_form_turkey_pos" model="ir.ui.view">
+            <field name="name">payment.transaction.form.turkey.pos</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.payment_transaction_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <notebook invisible="provider_code not in ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']">
+                        <page string="POS Bilgileri">
+                            <group>
+                                <group string="İşlem Bilgileri">
+                                    <field name="pos_order_id" readonly="1"/>
+                                    <field name="pos_transaction_id" readonly="1"/>
+                                    <field name="pos_auth_code" readonly="1"/>
+                                    <field name="pos_batch_num" readonly="1"/>
+                                    <field name="pos_stan" readonly="1"/>
+                                    <field name="pos_rrn" readonly="1"/>
+                                </group>
+                                <group string="3D Secure">
+                                    <field name="is_3d_secure" readonly="1"/>
+                                    <field name="md_status" readonly="1"/>
+                                    <field name="md_error_message" readonly="1"/>
+                                </group>
+                                <group string="Taksit Bilgileri">
+                                    <field name="installment_count" readonly="1"/>
+                                    <field name="installment_amount" readonly="1"/>
+                                    <field name="commission_amount" readonly="1"/>
+                                    <field name="category_installment_id" readonly="1"/>
+                                </group>
+                                <group string="İade Bilgileri">
+                                    <field name="is_refunded" readonly="1"/>
+                                    <field name="refund_amount" readonly="1"/>
+                                    <field name="refund_date" readonly="1"/>
+                                    <field name="refund_transaction_id" readonly="1"/>
+                                </group>
+                                <group string="İptal Bilgileri">
+                                    <field name="is_cancelled" readonly="1"/>
+                                    <field name="cancel_date" readonly="1"/>
+                                    <field name="cancel_transaction_id" readonly="1"/>
+                                </group>
+                                <group string="Kart Bilgileri">
+                                    <field name="card_number_masked" readonly="1"/>
+                                    <field name="card_brand" readonly="1"/>
+                                    <field name="card_type" readonly="1"/>
+                                </group>
+                                <group string="Hata Bilgileri" invisible="state != 'error'">
+                                    <field name="error_code" readonly="1"/>
+                                    <field name="error_message" readonly="1"/>
+                                </group>
+                            </group>
+                            <separator string="İstek/Yanıt Verileri"/>
+                            <field name="request_data" readonly="1"/>
+                            <field name="response_data" readonly="1"/>
+                        </page>
+                        <page string="İşlem Tarihçesi">
+                            <field name="history_ids" readonly="1">
+                                <tree>
+                                    <field name="date"/>
+                                    <field name="state"/>
+                                    <field name="message"/>
+                                    <field name="user_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+                
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_refund_wizard" 
+                            string="İade Yap" 
+                            type="object" 
+                            class="oe_highlight"
+                            invisible="state != 'done' or is_refunded"
+                            groups="turkey_pos_payment.group_pos_manager"/>
+                    <button name="action_open_cancel_wizard" 
+                            string="İptal Et" 
+                            type="object"
+                            invisible="state != 'done' or is_cancelled"
+                            groups="turkey_pos_payment.group_pos_manager"/>
+                    <button name="action_query_status" 
+                            string="Durum Sorgula" 
+                            type="object"
+                            invisible="not pos_order_id"
+                            groups="turkey_pos_payment.group_pos_user"/>
+                    <button name="action_view_history" 
+                            string="Tarihçeyi Görüntüle" 
+                            type="object"
+                            invisible="not pos_order_id"
+                            groups="turkey_pos_payment.group_pos_user"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Ödeme İşlemi Ağaç Görünümü -->
+        <record id="view_payment_transaction_tree_turkey_pos" model="ir.ui.view">
+            <field name="name">payment.transaction.tree.turkey.pos</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.payment_transaction_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="pos_state" optional="show"/>
+                    <field name="installment_count" optional="show"/>
+                    <field name="is_3d_secure" optional="hide"/>
+                    <field name="is_refunded" optional="hide"/>
+                    <field name="is_cancelled" optional="hide"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Ödeme İşlemi Filtre -->
+        <record id="view_payment_transaction_search_turkey_pos" model="ir.ui.view">
+            <field name="name">payment.transaction.search.turkey.pos</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.payment_transaction_search"/>
+            <field name="arch" type="xml">
+                <filter name="state_done" position="after">
+                    <separator/>
+                    <filter string="3D Secure" name="3d_secure" domain="[('is_3d_secure', '=', True)]"/>
+                    <filter string="Taksitli" name="installment" domain="[('installment_count', '>', 1)]"/>
+                    <filter string="İade Edilmiş" name="refunded" domain="[('is_refunded', '=', True)]"/>
+                    <filter string="İptal Edilmiş" name="cancelled" domain="[('is_cancelled', '=', True)]"/>
+                    <separator/>
+                    <filter string="POS İşlemleri" name="pos_transactions" 
+                            domain="[('provider_code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]"/>
+                    <group expand="0" string="Grupla">
+                        <filter string="POS Durumu" name="group_by_pos_state" context="{'group_by': 'pos_state'}"/>
+                        <filter string="Taksit Sayısı" name="group_by_installment" context="{'group_by': 'installment_count'}"/>
+                        <filter string="3D Secure" name="group_by_3d" context="{'group_by': 'is_3d_secure'}"/>
+                    </group>
+                </filter>
+            </field>
+        </record>
+
+        <!-- Ödeme İşlemi Eylem -->
+        <record id="action_payment_transaction_turkey_pos" model="ir.actions.act_window">
+            <field name="name">POS İşlemleri</field>
+            <field name="res_model">payment.transaction</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('provider_code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]</field>
+            <field name="context">{'search_default_pos_transactions': 1}</field>
+        </record>
+
+        <!-- Menü Öğesi -->
+        <menuitem id="menu_payment_transaction_turkey_pos" 
+                  name="POS İşlemleri"
+                  parent="payment.payment_menu"
+                  action="action_payment_transaction_turkey_pos"
+                  sequence="30"/>
+
+        <!-- İşlem Tarihçesi Ağaç Görünümü -->
+        <record id="view_payment_transaction_history_tree" model="ir.ui.view">
+            <field name="name">payment.transaction.history.tree</field>
+            <field name="model">payment.transaction.history</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date"/>
+                    <field name="state"/>
+                    <field name="message"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- İşlem Tarihçesi Form Görünümü -->
+        <record id="view_payment_transaction_history_form" model="ir.ui.view">
+            <field name="name">payment.transaction.history.form</field>
+            <field name="model">payment.transaction.history</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="transaction_id"/>
+                            <field name="date"/>
+                            <field name="state"/>
+                            <field name="message"/>
+                            <field name="user_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- İşlem Tarihçesi Eylem -->
+        <record id="action_payment_transaction_history" model="ir.actions.act_window">
+            <field name="name">İşlem Tarihçesi</field>
+            <field name="res_model">payment.transaction.history</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

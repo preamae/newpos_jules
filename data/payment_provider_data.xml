@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Kart Markaları -->
+        <record id="card_brand_visa" model="bank.card.brand">
+            <field name="name">Visa</field>
+            <field name="code">visa</field>
+            <field name="sequence">10</field>
+            <field name="bin_prefixes">4
+454671
+454672
+413252</field>
+        </record>
+
+        <record id="card_brand_mastercard" model="bank.card.brand">
+            <field name="name">Mastercard</field>
+            <field name="code">mastercard</field>
+            <field name="sequence">20</field>
+            <field name="bin_prefixes">51
+52
+53
+54
+55
+2221
+2720</field>
+        </record>
+
+        <record id="card_brand_amex" model="bank.card.brand">
+            <field name="name">American Express</field>
+            <field name="code">amex</field>
+            <field name="sequence">30</field>
+            <field name="bin_prefixes">34
+37</field>
+        </record>
+
+        <record id="card_brand_troy" model="bank.card.brand">
+            <field name="name">Troy</field>
+            <field name="code">troy</field>
+            <field name="sequence">40</field>
+            <field name="bin_prefixes">9792
+9793
+65</field>
+        </record>
+
+        <!-- Para Birimleri -->
+        <record id="base.TRY" model="res.currency">
+            <field name="active">True</field>
+        </record>
+
+        <!-- Sekanslar -->
+        <record id="seq_pos_order" model="ir.sequence">
+            <field name="name">POS Sipariş</field>
+            <field name="code">pos.order</field>
+            <field name="prefix">POS/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_pos_reconciliation" model="ir.sequence">
+            <field name="name">POS Mutabakat</field>
+            <field name="code">pos.reconciliation</field>
+            <field name="prefix">MUT/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

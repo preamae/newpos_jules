@@ -1,0 +1,52 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bank_gateway_user,Banka Gateway Kullanıcısı,model_bank_gateway,turkey_pos_payment.group_pos_user,1,0,0,0
+access_bank_gateway_manager,Banka Gateway Yöneticisi,model_bank_gateway,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_bank_gateway_admin,Banka Gateway Admin,model_bank_gateway,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_bank_card_brand_user,Kart Markası Kullanıcısı,model_bank_card_brand,turkey_pos_payment.group_pos_user,1,0,0,0
+access_bank_card_brand_manager,Kart Markası Yöneticisi,model_bank_card_brand,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_bank_card_brand_admin,Kart Markası Admin,model_bank_card_brand,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_installment_option_user,Taksit Seçeneği Kullanıcısı,model_installment_option,turkey_pos_payment.group_pos_user,1,0,0,0
+access_installment_option_manager,Taksit Seçeneği Yöneticisi,model_installment_option,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_installment_option_admin,Taksit Seçeneği Admin,model_installment_option,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_product_category_installment_user,Kategori Taksit Kullanıcısı,model_product_category_installment,turkey_pos_payment.group_pos_user,1,0,0,0
+access_product_category_installment_manager,Kategori Taksit Yöneticisi,model_product_category_installment,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_product_category_installment_admin,Kategori Taksit Admin,model_product_category_installment,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_product_category_bank_installment_user,Banka Taksit Kullanıcısı,model_product_category_bank_installment,turkey_pos_payment.group_pos_user,1,0,0,0
+access_product_category_bank_installment_manager,Banka Taksit Yöneticisi,model_product_category_bank_installment,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_product_category_bank_installment_admin,Banka Taksit Admin,model_product_category_bank_installment,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_product_category_campaign_user,Kampanya Kullanıcısı,model_product_category_campaign,turkey_pos_payment.group_pos_user,1,0,0,0
+access_product_category_campaign_manager,Kampanya Yöneticisi,model_product_category_campaign,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_product_category_campaign_admin,Kampanya Admin,model_product_category_campaign,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_pos_order_user,POS Sipariş Kullanıcısı,model_pos_order,turkey_pos_payment.group_pos_user,1,1,1,0
+access_pos_order_manager,POS Sipariş Yöneticisi,model_pos_order,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_order_admin,POS Sipariş Admin,model_pos_order,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_pos_order_line_user,POS Sipariş Satırı Kullanıcısı,model_pos_order_line,turkey_pos_payment.group_pos_user,1,1,1,0
+access_pos_order_line_manager,POS Sipariş Satırı Yöneticisi,model_pos_order_line,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_order_line_admin,POS Sipariş Satırı Admin,model_pos_order_line,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_pos_reconciliation_user,POS Mutabakat Kullanıcısı,model_pos_reconciliation,turkey_pos_payment.group_pos_user,1,0,0,0
+access_pos_reconciliation_manager,POS Mutabakat Yöneticisi,model_pos_reconciliation,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_reconciliation_admin,POS Mutabakat Admin,model_pos_reconciliation,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_payment_transaction_history_user,İşlem Tarihçesi Kullanıcısı,model_payment_transaction_history,turkey_pos_payment.group_pos_user,1,0,0,0
+access_payment_transaction_history_manager,İşlem Tarihçesi Yöneticisi,model_payment_transaction_history,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_payment_transaction_history_admin,İşlem Tarihçesi Admin,model_payment_transaction_history,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_pos_refund_wizard,İade Sihirbazı,model_pos_refund_wizard,turkey_pos_payment.group_pos_manager,1,1,1,1
+access_pos_cancel_wizard,İptal Sihirbazı,model_pos_cancel_wizard,turkey_pos_payment.group_pos_manager,1,1,1,1
+access_pos_status_query_wizard,Durum Sorgulama Sihirbazı,model_pos_status_query_wizard,turkey_pos_payment.group_pos_user,1,1,1,1
+
+access_pos_accounting_config_user,POS Muhasebe Konfigürasyonu Kullanıcısı,model_pos_accounting_config,turkey_pos_payment.group_pos_user,1,0,0,0
+access_pos_accounting_config_manager,POS Muhasebe Konfigürasyonu Yöneticisi,model_pos_accounting_config,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_accounting_config_admin,POS Muhasebe Konfigürasyonu Admin,model_pos_accounting_config,turkey_pos_payment.group_pos_admin,1,1,1,1
+
+access_pos_journal_entry_user,POS Yevmiye Kaydı Kullanıcısı,model_pos_journal_entry,turkey_pos_payment.group_pos_user,1,0,0,0
+access_pos_journal_entry_manager,POS Yevmiye Kaydı Yöneticisi,model_pos_journal_entry,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_journal_entry_admin,POS Yevmiye Kaydı Admin,model_pos_journal_entry,turkey_pos_payment.group_pos_admin,1,1,1,1

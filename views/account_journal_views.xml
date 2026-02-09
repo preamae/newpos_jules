@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- POS Muhasebe Konfigürasyonu Form Görünümü -->
+        <record id="view_pos_accounting_config_form" model="ir.ui.view">
+            <field name="name">pos.accounting.config.form</field>
+            <field name="model">pos.accounting.config</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                                <field name="provider_id"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Gelir Hesapları">
+                                <group>
+                                    <field name="income_account_id"/>
+                                </group>
+                            </page>
+                            <page string="Gider Hesapları">
+                                <group>
+                                    <field name="commission_account_id"/>
+                                    <field name="installment_fee_account_id"/>
+                                </group>
+                            </page>
+                            <page string="Alacak/Borç Hesapları">
+                                <group>
+                                    <field name="receivable_account_id"/>
+                                    <field name="payable_account_id"/>
+                                    <field name="refund_account_id"/>
+                                </group>
+                            </page>
+                            <page string="Diğer Hesaplar">
+                                <group>
+                                    <field name="reconciliation_account_id"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- POS Muhasebe Konfigürasyonu Ağaç Görünümü -->
+        <record id="view_pos_accounting_config_tree" model="ir.ui.view">
+            <field name="name">pos.accounting.config.tree</field>
+            <field name="model">pos.accounting.config</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="provider_id"/>
+                    <field name="company_id"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- POS Muhasebe Konfigürasyonu Eylem -->
+        <record id="action_pos_accounting_config" model="ir.actions.act_window">
+            <field name="name">POS Muhasebe Konfigürasyonu</field>
+            <field name="res_model">pos.accounting.config</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- POS Yevmiye Kaydı Form Görünümü -->
+        <record id="view_pos_journal_entry_form" model="ir.ui.view">
+            <field name="name">pos.journal.entry.form</field>
+            <field name="model">pos.journal.entry</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_post" string="Kaydet" type="object" 
+                                class="oe_highlight" invisible="state != 'draft'"/>
+                        <button name="action_cancel" string="İptal Et" type="object" 
+                                invisible="state not in ['draft', 'posted']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_move" type="object" 
+                                    class="oe_stat_button" icon="fa-file-text-o"
+                                    invisible="not move_id">
+                                <span class="o_stat_text">Yevmiye</span>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="transaction_id"/>
+                                <field name="provider_id" readonly="1"/>
+                                <field name="entry_type"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="currency_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Tutarlar">
+                            <group>
+                                <field name="amount"/>
+                                <field name="commission_amount"/>
+                                <field name="installment_fee"/>
+                            </group>
+                            <group>
+                                <field name="net_amount" readonly="1"/>
+                            </group>
+                        </group>
+                        <field name="description"/>
+                        <field name="move_id" readonly="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- POS Yevmiye Kaydı Ağaç Görünümü -->
+        <record id="view_pos_journal_entry_tree" model="ir.ui.view">
+            <field name="name">pos.journal.entry.tree</field>
+            <field name="model">pos.journal.entry</field>
+            <field name="arch" type="xml">
+                <tree decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="transaction_id"/>
+                    <field name="provider_id"/>
+                    <field name="entry_type"/>
+                    <field name="amount"/>
+                    <field name="net_amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- POS Yevmiye Kaydı Filtre -->
+        <record id="view_pos_journal_entry_search" model="ir.ui.view">
+            <field name="name">pos.journal.entry.search</field>
+            <field name="model">pos.journal.entry</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="transaction_id"/>
+                    <field name="provider_id"/>
+                    <filter string="Taslak" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Kaydedildi" name="posted" domain="[('state', '=', 'posted')]"/>
+                    <filter string="Satış" name="sale" domain="[('entry_type', '=', 'sale')]"/>
+                    <filter string="İade" name="refund" domain="[('entry_type', '=', 'refund')]"/>
+                    <group expand="0" string="Grupla">
+                        <filter string="Sağlayıcı" name="group_by_provider" context="{'group_by': 'provider_id'}"/>
+                        <filter string="Kayıt Tipi" name="group_by_type" context="{'group_by': 'entry_type'}"/>
+                        <filter string="Tarih" name="group_by_date" context="{'group_by': 'date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- POS Yevmiye Kaydı Eylem -->
+        <record id="action_pos_journal_entry" model="ir.actions.act_window">
+            <field name="name">POS Yevmiye Kayıtları</field>
+            <field name="res_model">pos.journal.entry</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Hesap Yevmiyesi Form Görünümü (inherit) -->
+        <record id="view_account_journal_form_pos" model="ir.ui.view">
+            <field name="name">account.journal.form.pos</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="is_pos_journal"/>
+                    <field name="pos_provider_id" invisible="not is_pos_journal"/>
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page string="POS Hesapları" invisible="not is_pos_journal">
+                        <group>
+                            <field name="pos_commission_account_id"/>
+                            <field name="pos_expense_account_id"/>
+                            <field name="pos_receivable_account_id"/>
+                            <field name="pos_installment_fee_account_id"/>
+                            <field name="pos_reconciliation_account_id"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Menü Öğeleri -->
+        <menuitem id="menu_pos_accounting_root" 
+                  name="POS Muhasebe"
+                  parent="menu_turkey_pos_root"
+                  sequence="40"/>
+
+        <menuitem id="menu_pos_accounting_config" 
+                  name="Muhasebe Konfigürasyonu"
+                  parent="menu_pos_accounting_root"
+                  action="action_pos_accounting_config"
+                  sequence="10"/>
+
+        <menuitem id="menu_pos_journal_entry" 
+                  name="Yevmiye Kayıtları"
+                  parent="menu_pos_accounting_root"
+                  action="action_pos_journal_entry"
+                  sequence="20"/>
+    </data>
+</odoo>
