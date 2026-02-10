@@ -116,21 +116,19 @@
             <field name="model">payment.transaction</field>
             <field name="inherit_id" ref="payment.payment_transaction_search"/>
             <field name="arch" type="xml">
-                <filter name="state_done" position="after">
-                    <separator/>
+                <xpath expr="." position="inside">
                     <filter string="3D Secure" name="3d_secure" domain="[('is_3d_secure', '=', True)]"/>
                     <filter string="Taksitli" name="installment" domain="[('installment_count', '>', 1)]"/>
                     <filter string="İade Edilmiş" name="refunded" domain="[('is_refunded', '=', True)]"/>
                     <filter string="İptal Edilmiş" name="cancelled" domain="[('is_cancelled', '=', True)]"/>
-                    <separator/>
                     <filter string="POS İşlemleri" name="pos_transactions" 
                             domain="[('provider_code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]"/>
-                    <group expand="0" string="Grupla">
+                    <group expand="0" string="Group By">
                         <filter string="POS Durumu" name="group_by_pos_state" context="{'group_by': 'pos_state'}"/>
                         <filter string="Taksit Sayısı" name="group_by_installment" context="{'group_by': 'installment_count'}"/>
                         <filter string="3D Secure" name="group_by_3d" context="{'group_by': 'is_3d_secure'}"/>
                     </group>
-                </filter>
+                </xpath>
             </field>
         </record>
 

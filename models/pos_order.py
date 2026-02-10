@@ -278,3 +278,23 @@ class PosReconciliation(models.Model):
         """Mutabakatı iptal eder"""
         for rec in self:
             rec.state = 'cancelled'
+
+    @api.model
+    def _cron_daily_reconciliation(self):
+        """Günlük mutabakat raporu oluştur"""
+        yesterday = datetime.now() - timedelta(days=1)
+        providers = self.env['payment.provider'].search([
+            ('code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank',
+                            'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank',
+                            'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla']),
+            ('state', '=', 'enabled')
+        ])
+
+        for provider in providers:
+            reconciliation = self.create({
+                'name': "MUT/%s/%s" % (yesterday.strftime('%Y%m%d'), provider.code.upper()),
+                'date_start': yesterday.date(),
+                'date_end': yesterday.date(),
+                'provider_id': provider.id,
+            })
+            reconciliation.action_load_transactions()

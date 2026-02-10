@@ -57,6 +57,7 @@ class PaymentProvider(models.Model):
     })
 
     # ==================== GATEWAY TİPİ ====================
+    gateway_id = fields.Many2one('bank.gateway', string='Banka Gateway')
     gateway_type = fields.Selection([
         ('est', 'Asseco EST (İşbank, Ziraat, Halkbank, TEB, Şekerbank)'),
         ('est_v3', 'Asseco EST V3 (SHA-512)'),

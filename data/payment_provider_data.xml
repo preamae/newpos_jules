@@ -63,5 +63,13 @@
             <field name="padding">6</field>
             <field name="company_id" eval="False"/>
         </record>
+
+        <record id="seq_pos_journal_entry" model="ir.sequence">
+            <field name="name">POS Yevmiye Kaydı</field>
+            <field name="code">pos.journal.entry</field>
+            <field name="prefix">POS/JRN/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
     </data>
 </odoo>

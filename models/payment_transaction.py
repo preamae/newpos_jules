@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -63,7 +63,8 @@ class PaymentTransaction(models.Model):
     
     # Kategori Bazlı Taksit
     category_installment_id = fields.Many2one('installment.option', string='Kategori Taksit Seçeneği')
-    
+    category_id = fields.Many2one('product.category', string='İlişkili Kategori')
+
     # İşlem Durumu
     pos_state = fields.Selection([
         ('pending', 'Bekliyor'),
@@ -421,6 +422,47 @@ class PaymentTransaction(models.Model):
             'domain': [('transaction_id', '=', self.id)],
             'context': {'default_transaction_id': self.id},
         }
+
+    # ==================== CRON METOTLARI ====================
+
+    @api.model
+    def _cron_check_pending_transactions(self):
+        """Bekleyen işlemleri kontrol et"""
+        cutoff = datetime.now() - timedelta(hours=1)
+        pending_transactions = self.search([
+            ('state', '=', 'pending'),
+            ('pos_order_id', '!=', False),
+            ('create_date', '<', cutoff)
+        ])
+        for tx in pending_transactions:
+            try:
+                tx.action_query_status()
+            except Exception as e:
+                _logger.error("Error checking transaction %s: %s", tx.reference, e)
+
+    @api.model
+    def _cron_archive_old_transactions(self):
+        """90 günden eski işlemleri arşivle"""
+        cutoff_date = datetime.now() - timedelta(days=90)
+        old_transactions = self.search([
+            ('create_date', '<', cutoff_date),
+            ('state', 'in', ['done', 'cancel', 'error']),
+        ])
+        for tx in old_transactions:
+            if tx.history_ids:
+                # Arşivleme mantığı buraya eklenebilir
+                pass
+
+    @api.model
+    def _cron_cleanup_failed_transactions(self):
+        """30 günden eski başarısız işlemleri temizle"""
+        cutoff_date = datetime.now() - timedelta(days=30)
+        failed_transactions = self.search([
+            ('create_date', '<', cutoff_date),
+            ('state', '=', 'error'),
+            ('pos_order_id', '=', False),
+        ])
+        failed_transactions.unlink()
 
 
 class PaymentTransactionHistory(models.Model):

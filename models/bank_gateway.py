@@ -153,9 +153,3 @@ class BankCardBrand(models.Model):
     
     # Gateway ilişkisi
     gateway_ids = fields.Many2many('bank.gateway', string='Destekleyen Gatewayler')
-
-
-class PaymentProvider(models.Model):
-    _inherit = 'payment.provider'
-
-    gateway_id = fields.Many2one('bank.gateway', string='Banka Gateway')

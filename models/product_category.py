@@ -37,6 +37,9 @@ class ProductCategory(models.Model):
     installment_line_ids = fields.One2many('product.category.installment', 'category_id',
                                            string='Özel Taksit Tanımları')
     
+    # Varsayılan Taksit
+    default_installment_id = fields.Many2one('installment.option', string='Varsayılan Taksit')
+    
     # ==================== BANKA ÖZEL TAKSİTLER ====================
     
     bank_installment_ids = fields.One2many('product.category.bank.installment', 'category_id',
@@ -59,6 +62,35 @@ class ProductCategory(models.Model):
 
     # ==================== İŞ METOTLARI ====================
     
+    def get_available_installments(self, amount, provider_id=None):
+        """Bu kategori için uygun taksit seçeneklerini döndürür"""
+        self.ensure_one()
+        
+        if not self.allow_installments:
+            return []
+        
+        domain = [('category_id', '=', self.id), ('is_active', '=', True)]
+        if provider_id:
+            domain.append(('provider_id', '=', provider_id))
+        
+        category_installments = self.env['product.category.installment'].search(domain)
+        
+        available_options = []
+        for ci in category_installments:
+            option = ci.installment_option_id
+            if option.is_active and option.installment_count <= self.max_installment_count:
+                if option.is_eligible(amount):
+                    available_options.append({
+                        'option_id': option.id,
+                        'provider_id': option.provider_id.id,
+                        'provider_name': option.provider_id.name,
+                        'installment_count': option.installment_count,
+                        'commission_rate': ci.custom_commission_rate or option.commission_rate,
+                        'amounts': option.calculate_installment_amount(amount),
+                    })
+        
+        return sorted(available_options, key=lambda x: x['installment_count'])
+
     def get_installment_options(self, amount, provider_id=None, card_brand=None):
         """Bu kategori için uygun taksit seçeneklerini döndürür"""
         self.ensure_one()

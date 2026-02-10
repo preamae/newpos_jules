@@ -35,18 +35,43 @@ class TurkeyPosPaymentController(http.Controller):
                 })
             
             # İşlem oluştur
-            transaction_vals = {
-                'provider_id': provider.id,
-                'reference': post.get('reference'),
-                'amount': float(post.get('amount')),
-                'currency_id': request.env.company.currency_id.id,
-                'partner_id': request.env.user.partner_id.id if request.env.user else None,
-                'partner_email': post.get('email'),
-                'partner_ip_address': request.httprequest.remote_addr,
-                'installment_count': int(post.get('installment_count', 1)),
-            }
-            
-            transaction = request.env['payment.transaction'].sudo().create(transaction_vals)
+            reference = post.get('reference')
+            amount = float(post.get('amount'))
+
+            # Güvenlik Kontrolü: Tutarı doğrula
+            # Eğer referans bir Sale Order ise, gerçek tutarı oradan al
+            sale_order = request.env['sale.order'].sudo().search([('name', '=', reference)], limit=1)
+            if sale_order:
+                if request.env.company.currency_id.compare_amounts(amount, sale_order.amount_total) != 0:
+                    _logger.warning("Security Warning: Amount mismatch for reference %s. Client sent %s, expected %s. Using expected amount.", reference, amount, sale_order.amount_total)
+                    amount = sale_order.amount_total
+            else:
+                # Referans bir Invoice (Fatura) olabilir
+                invoice = request.env['account.move'].sudo().search([('name', '=', reference), ('move_type', '=', 'out_invoice')], limit=1)
+                if invoice:
+                    if request.env.company.currency_id.compare_amounts(amount, invoice.amount_total) != 0:
+                        _logger.warning("Security Warning: Amount mismatch for reference %s. Client sent %s, expected %s. Using expected amount.", reference, amount, invoice.amount_total)
+                        amount = invoice.amount_total
+
+            # Referans kontrolü - mükerrer veya yanlış tutarlı işlemi önle
+            existing_transaction = request.env['payment.transaction'].sudo().search([('reference', '=', reference)], limit=1)
+            if existing_transaction:
+                if request.env.company.currency_id.compare_amounts(amount, existing_transaction.amount) != 0:
+                    _logger.warning("Security Warning: Amount mismatch for existing transaction %s", reference)
+                    amount = existing_transaction.amount
+                transaction = existing_transaction
+            else:
+                transaction_vals = {
+                    'provider_id': provider.id,
+                    'reference': reference,
+                    'amount': amount,
+                    'currency_id': request.env.company.currency_id.id,
+                    'partner_id': request.env.user.partner_id.id if request.env.user else None,
+                    'partner_email': post.get('email'),
+                    'partner_ip_address': request.httprequest.remote_addr,
+                    'installment_count': int(post.get('installment_count', 1)),
+                }
+                transaction = request.env['payment.transaction'].sudo().create(transaction_vals)
             
             # Kart verilerini hazırla
             card_data = {
