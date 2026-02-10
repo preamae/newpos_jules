@@ -55,12 +55,12 @@
             <field name="name">pos.accounting.config.tree</field>
             <field name="model">pos.accounting.config</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="provider_id"/>
                     <field name="company_id"/>
                     <field name="active"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -68,7 +68,7 @@
         <record id="action_pos_accounting_config" model="ir.actions.act_window">
             <field name="name">POS Muhasebe Konfigürasyonu</field>
             <field name="res_model">pos.accounting.config</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- POS Yevmiye Kaydı Form Görünümü -->
@@ -130,7 +130,7 @@
             <field name="name">pos.journal.entry.tree</field>
             <field name="model">pos.journal.entry</field>
             <field name="arch" type="xml">
-                <tree decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'">
+                <list decoration-muted="state == 'cancelled'" decoration-info="state == 'draft'">
                     <field name="name"/>
                     <field name="date"/>
                     <field name="transaction_id"/>
@@ -139,7 +139,7 @@
                     <field name="amount"/>
                     <field name="net_amount"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -169,7 +169,7 @@
         <record id="action_pos_journal_entry" model="ir.actions.act_window">
             <field name="name">POS Yevmiye Kayıtları</field>
             <field name="res_model">pos.journal.entry</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- Hesap Yevmiyesi Form Görünümü (inherit) -->

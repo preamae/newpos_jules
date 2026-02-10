@@ -57,12 +57,12 @@
                         </page>
                         <page string="İşlem Tarihçesi">
                             <field name="history_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="date"/>
                                     <field name="state"/>
                                     <field name="message"/>
                                     <field name="user_id"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -98,15 +98,15 @@
         <record id="view_payment_transaction_tree_turkey_pos" model="ir.ui.view">
             <field name="name">payment.transaction.tree.turkey.pos</field>
             <field name="model">payment.transaction</field>
-            <field name="inherit_id" ref="payment.payment_transaction_tree"/>
+            <field name="inherit_id" ref="payment.payment_transaction_list"/>
             <field name="arch" type="xml">
-                <field name="state" position="after">
+                <xpath expr="//field[@name='state']" position="after">
                     <field name="pos_state" optional="show"/>
                     <field name="installment_count" optional="show"/>
                     <field name="is_3d_secure" optional="hide"/>
                     <field name="is_refunded" optional="hide"/>
                     <field name="is_cancelled" optional="hide"/>
-                </field>
+                </xpath>
             </field>
         </record>
 
@@ -138,7 +138,7 @@
         <record id="action_payment_transaction_turkey_pos" model="ir.actions.act_window">
             <field name="name">POS İşlemleri</field>
             <field name="res_model">payment.transaction</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('provider_code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]</field>
             <field name="context">{'search_default_pos_transactions': 1}</field>
         </record>
@@ -155,12 +155,12 @@
             <field name="name">payment.transaction.history.tree</field>
             <field name="model">payment.transaction.history</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="date"/>
                     <field name="state"/>
                     <field name="message"/>
                     <field name="user_id"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -187,7 +187,7 @@
         <record id="action_payment_transaction_history" model="ir.actions.act_window">
             <field name="name">İşlem Tarihçesi</field>
             <field name="res_model">payment.transaction.history</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
     </data>
 </odoo>

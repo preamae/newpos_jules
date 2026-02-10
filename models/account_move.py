@@ -53,7 +53,7 @@ class AccountMove(models.Model):
             'name': _('POS İşlemleri'),
             'type': 'ir.actions.act_window',
             'res_model': 'payment.transaction',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('id', 'in', self.pos_transaction_ids.ids)],
         }
 

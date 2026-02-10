@@ -68,13 +68,13 @@
         <record id="view_payment_provider_tree_turkey_pos" model="ir.ui.view">
             <field name="name">payment.provider.tree.turkey.pos</field>
             <field name="model">payment.provider</field>
-            <field name="inherit_id" ref="payment.payment_provider_tree"/>
+            <field name="inherit_id" ref="payment.payment_provider_list"/>
             <field name="arch" type="xml">
-                <field name="state" position="after">
+                <xpath expr="//field[@name='state']" position="after">
                     <field name="gateway_type" optional="hide"/>
                     <field name="use_3d_secure" optional="hide"/>
                     <field name="enable_installments" optional="hide"/>
-                </field>
+                </xpath>
             </field>
         </record>
 
@@ -101,7 +101,7 @@
         <record id="action_payment_provider_turkey_pos" model="ir.actions.act_window">
             <field name="name">Türkiye POS Sağlayıcıları</field>
             <field name="res_model">payment.provider</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]</field>
             <field name="context">{'default_code': 'akbank'}</field>
         </record>

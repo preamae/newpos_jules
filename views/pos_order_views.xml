@@ -94,7 +94,7 @@
             <field name="name">pos.order.tree</field>
             <field name="model">pos.order</field>
             <field name="arch" type="xml">
-                <tree decoration-muted="state == 'cancelled'" 
+                <list decoration-muted="state == 'cancelled'" 
                       decoration-success="state == 'done'"
                       decoration-info="state == 'pending'"
                       decoration-danger="state == 'failed'">
@@ -107,7 +107,7 @@
                     <field name="state"/>
                     <field name="is_refunded"/>
                     <field name="is_cancelled"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -146,14 +146,14 @@
         <record id="action_pos_order" model="ir.actions.act_window">
             <field name="name">POS Siparişleri</field>
             <field name="res_model">pos.order</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- POS Sipariş Dashboard Eylem -->
         <record id="action_pos_order_dashboard" model="ir.actions.act_window">
             <field name="name">POS Dashboard</field>
             <field name="res_model">pos.order</field>
-            <field name="view_mode">tree,form,graph,pivot</field>
+            <field name="view_mode">list,form,graph,pivot</field>
             <field name="context">{'search_default_today': 1}</field>
         </record>
 
@@ -195,21 +195,21 @@
                         <notebook>
                             <page string="Siparişler">
                                 <field name="order_ids" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="date"/>
                                         <field name="amount"/>
                                         <field name="state"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="İşlemler">
                                 <field name="transaction_ids" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="reference"/>
                                         <field name="amount"/>
                                         <field name="state"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -223,7 +223,7 @@
             <field name="name">pos.reconciliation.tree</field>
             <field name="model">pos.reconciliation</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
@@ -231,7 +231,7 @@
                     <field name="total_transaction_count"/>
                     <field name="net_amount"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -239,7 +239,7 @@
         <record id="action_pos_reconciliation" model="ir.actions.act_window">
             <field name="name">POS Mutabakat</field>
             <field name="res_model">pos.reconciliation</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
         <!-- Menü Öğeleri -->

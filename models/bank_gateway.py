@@ -130,7 +130,7 @@ class BankGateway(models.Model):
             'name': _('Ödeme Sağlayıcıları'),
             'type': 'ir.actions.act_window',
             'res_model': 'payment.provider',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('gateway_id', '=', self.id)],
             'context': {'default_gateway_id': self.id, 'default_gateway_type': self.gateway_type},
         }

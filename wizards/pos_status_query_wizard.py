@@ -76,7 +76,7 @@ class PosStatusQueryWizard(models.TransientModel):
                 'name': _('Sorgu Sonuçları'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'payment.transaction',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'domain': [('id', 'in', self.result_ids.ids)],
             }
         

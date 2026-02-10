@@ -4,21 +4,22 @@
         <!-- Bekleyen İşlemleri Kontrol Et -->
         <record id="cron_check_pending_transactions" model="ir.cron">
             <field name="name">POS: Bekleyen İşlemleri Kontrol Et</field>
-            <field name="model_id" ref="payment.model_payment_transaction"/>
+            <field name="model_id" search="[('model', '=', 'payment.transaction')]" model="ir.model"/>
             <field name="state">code</field>
-            <field name="code">
+            <field name="code"><![CDATA[
 # Bekleyen işlemleri kontrol et
-pending_transactions = model.search([
+cutoff = datetime.datetime.now() - datetime.timedelta(hours=1)
+pending_transactions = env['payment.transaction'].search([
     ('state', '=', 'pending'),
     ('pos_order_id', '!=', False),
-    ('create_date', '&lt;', datetime.datetime.now() - datetime.timedelta(hours=1))
+    ('create_date', '<', cutoff)
 ])
 for tx in pending_transactions:
     try:
-        tx.provider_id.query_status(tx)
+        tx.action_query_status()
     except Exception as e:
-        _logger.error("Error checking transaction %s: %s", tx.reference, e)
-            </field>
+        log("Error checking transaction %s: %s" % (tx.reference, str(e)), level='error')
+            ]]></field>
             <field name="interval_number">15</field>
             <field name="interval_type">minutes</field>
             <field name="numbercall">-1</field>
@@ -29,13 +30,11 @@ for tx in pending_transactions:
         <!-- Günlük Mutabakat Raporu -->
         <record id="cron_daily_reconciliation" model="ir.cron">
             <field name="name">POS: Günlük Mutabakat Raporu</field>
-            <field name="model_id" ref="model_pos_reconciliation"/>
+            <field name="model_id" search="[('model', '=', 'pos.reconciliation')]" model="ir.model"/>
             <field name="state">code</field>
-            <field name="code">
+            <field name="code"><![CDATA[
 # Günlük mutabakat raporu oluştur
-from datetime import datetime, timedelta
-
-yesterday = datetime.now() - timedelta(days=1)
+yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
 providers = env['payment.provider'].search([
     ('code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 
                     'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank',
@@ -45,13 +44,13 @@ providers = env['payment.provider'].search([
 
 for provider in providers:
     reconciliation = env['pos.reconciliation'].create({
-        'name': f"MUT/{yesterday.strftime('%Y%m%d')}/{provider.code.upper()}",
+        'name': "MUT/%s/%s" % (yesterday.strftime('%Y%m%d'), provider.code.upper()),
         'date_start': yesterday.date(),
         'date_end': yesterday.date(),
         'provider_id': provider.id,
     })
     reconciliation.action_load_transactions()
-            </field>
+            ]]></field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
@@ -62,15 +61,13 @@ for provider in providers:
         <!-- Eski İşlemleri Arşivle -->
         <record id="cron_archive_old_transactions" model="ir.cron">
             <field name="name">POS: Eski İşlemleri Arşivle</field>
-            <field name="model_id" ref="payment.model_payment_transaction"/>
+            <field name="model_id" search="[('model', '=', 'payment.transaction')]" model="ir.model"/>
             <field name="state">code</field>
-            <field name="code">
+            <field name="code"><![CDATA[
 # 90 günden eski işlemleri arşivle
-from datetime import datetime, timedelta
-
-cutoff_date = datetime.now() - timedelta(days=90)
-old_transactions = model.search([
-    ('create_date', '&lt;', cutoff_date),
+cutoff_date = datetime.datetime.now() - datetime.timedelta(days=90)
+old_transactions = env['payment.transaction'].search([
+    ('create_date', '<', cutoff_date),
     ('state', 'in', ['done', 'cancel', 'error']),
 ])
 
@@ -79,7 +76,7 @@ for tx in old_transactions:
     if tx.history_ids:
         # Tarihçeyi arşiv kaydına dönüştür
         pass
-            </field>
+            ]]></field>
             <field name="interval_number">1</field>
             <field name="interval_type">weeks</field>
             <field name="numbercall">-1</field>
@@ -90,22 +87,20 @@ for tx in old_transactions:
         <!-- Başarısız İşlemleri Temizle -->
         <record id="cron_cleanup_failed_transactions" model="ir.cron">
             <field name="name">POS: Başarısız İşlemleri Temizle</field>
-            <field name="model_id" ref="payment.model_payment_transaction"/>
+            <field name="model_id" search="[('model', '=', 'payment.transaction')]" model="ir.model"/>
             <field name="state">code</field>
-            <field name="code">
+            <field name="code"><![CDATA[
 # 30 günden eski başarısız işlemleri temizle
-from datetime import datetime, timedelta
-
-cutoff_date = datetime.now() - timedelta(days=30)
-failed_transactions = model.search([
-    ('create_date', '&lt;', cutoff_date),
+cutoff_date = datetime.datetime.now() - datetime.timedelta(days=30)
+failed_transactions = env['payment.transaction'].search([
+    ('create_date', '<', cutoff_date),
     ('state', '=', 'error'),
     ('pos_order_id', '=', False),
 ])
 
 # Başarısız işlemleri sil
 failed_transactions.unlink()
-            </field>
+            ]]></field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>

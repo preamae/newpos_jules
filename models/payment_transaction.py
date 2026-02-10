@@ -417,7 +417,7 @@ class PaymentTransaction(models.Model):
             'name': _('İşlem Tarihçesi'),
             'type': 'ir.actions.act_window',
             'res_model': 'payment.transaction.history',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('transaction_id', '=', self.id)],
             'context': {'default_transaction_id': self.id},
         }
