@@ -11,18 +11,17 @@ class AccountMove(models.Model):
 
     # ==================== POS İLİŞKİLERİ ====================
     
-    pos_transaction_ids = fields.One2many('payment.transaction', 'invoice_ids', 
-                                          string='POS İşlemleri')
-    pos_order_id = fields.Many2one('pos.order', string='POS Siparişi')
+    pos_transaction_ids = fields.Many2many('payment.transaction', string='POS İşlemleri')
+    turkey_pos_order_id = fields.Many2one('turkey.pos.order', string='POS Siparişi')
     
     # Ödeme Bilgileri
     payment_provider_id = fields.Many2one('payment.provider', string='Ödeme Sağlayıcısı')
     is_pos_payment = fields.Boolean(string='POS Ödemesi', default=False)
     
     # Taksit Bilgileri
-    installment_count = fields.Integer(related='pos_order_id.installment_count', 
+    installment_count = fields.Integer(related='turkey_pos_order_id.installment_count', 
                                         string='Taksit Sayısı', store=True)
-    installment_amount = fields.Monetary(related='pos_order_id.installment_amount',
+    installment_amount = fields.Monetary(related='turkey_pos_order_id.installment_amount',
                                           string='Taksit Tutarı', store=True, currency_field='currency_id')
     
     # İade Bilgileri

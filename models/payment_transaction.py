@@ -179,7 +179,7 @@ class PaymentTransaction(models.Model):
     def _create_pos_order(self):
         """İşlem başarılı olduğunda POS siparişi oluşturur"""
         self.ensure_one()
-        pos_order_model = self.env['pos.order'].sudo()
+        pos_order_model = self.env['turkey.pos.order'].sudo()
         
         # Eğer zaten varsa oluşturma
         existing_order = pos_order_model.search([('transaction_id', '=', self.id)], limit=1)
@@ -298,7 +298,7 @@ class PaymentTransaction(models.Model):
         refund_move.action_post()
         
         # POS siparişini güncelle
-        pos_order = self.env['pos.order'].search([('transaction_id', '=', self.id)], limit=1)
+        pos_order = self.env['turkey.pos.order'].search([('transaction_id', '=', self.id)], limit=1)
         if pos_order:
             pos_order.invoice_id = refund_move.id
 

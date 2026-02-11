@@ -50,7 +50,7 @@
         <!-- Sekanslar -->
         <record id="seq_pos_order" model="ir.sequence">
             <field name="name">POS Sipariş</field>
-            <field name="code">pos.order</field>
+            <field name="code">turkey.pos.order</field>
             <field name="prefix">POS/%(year)s/</field>
             <field name="padding">6</field>
             <field name="company_id" eval="False"/>

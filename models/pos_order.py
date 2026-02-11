@@ -10,15 +10,21 @@ _logger = logging.getLogger(__name__)
 
 
 class PosOrder(models.Model):
-    _name = 'pos.order'
+    _name = 'turkey.pos.order'
     _description = 'POS Sipariş Kaydı'
     _order = 'date desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     # ==================== TEMEL BİLGİLER ====================
     
-    name = fields.Char(string='Sipariş No', required=True, index=True, copy=False,
-                       default=lambda self: self.env['ir.sequence'].next_by_code('pos.order'))
+    name = fields.Char(string='Sipariş No', required=True, index=True, copy=False, default='/')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', '/') == '/':
+                vals['name'] = self.env['ir.sequence'].next_by_code('turkey.pos.order') or '/'
+        return super().create(vals_list)
     
     # İlişkiler
     transaction_id = fields.Many2one('payment.transaction', string='Ödeme İşlemi', required=True)
@@ -168,10 +174,10 @@ class PosOrder(models.Model):
 
 
 class PosOrderLine(models.Model):
-    _name = 'pos.order.line'
+    _name = 'turkey.pos.order.line'
     _description = 'POS Sipariş Satırı'
 
-    order_id = fields.Many2one('pos.order', string='Sipariş', required=True, ondelete='cascade')
+    order_id = fields.Many2one('turkey.pos.order', string='Sipariş', required=True, ondelete='cascade')
     
     # Ürün Bilgileri
     product_id = fields.Many2one('product.product', string='Ürün', required=True)
@@ -240,7 +246,7 @@ class PosReconciliation(models.Model):
     currency_id = fields.Many2one(related='provider_id.main_currency_id', string='Para Birimi')
     
     # İlişkiler
-    order_ids = fields.Many2many('pos.order', string='Siparişler')
+    order_ids = fields.Many2many('turkey.pos.order', string='Siparişler')
     transaction_ids = fields.Many2many('payment.transaction', string='İşlemler')
     
     @api.depends('order_ids')
@@ -264,7 +270,7 @@ class PosReconciliation(models.Model):
             rec.transaction_ids = [(6, 0, transactions.ids)]
             
             # İlgili siparişleri bul
-            orders = self.env['pos.order'].search([
+            orders = self.env['turkey.pos.order'].search([
                 ('transaction_id', 'in', transactions.ids)
             ])
             rec.order_ids = [(6, 0, orders.ids)]

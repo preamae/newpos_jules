@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- POS Hesapları için Hesap Türleri -->
+        
+        <!-- 120 - POS Alacakları (Alacak Hesabı) -->
+        <record id="account_template_pos_receivable" model="account.account.template">
+            <field name="code">120.01</field>
+            <field name="name">POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <!-- 610 - POS Satış Gelirleri (Gelir Hesabı) -->
+        <record id="account_template_pos_income" model="account.account.template">
+            <field name="code">610.01</field>
+            <field name="name">POS Satış Gelirleri</field>
+            <field name="account_type">income</field>
+        </record>
+
+        <!-- 630 - POS Komisyon Giderleri (Gider Hesabı) -->
+        <record id="account_template_pos_commission" model="account.account.template">
+            <field name="code">630.01</field>
+            <field name="name">POS Komisyon Giderleri</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- 631 - Taksit Farkı Giderleri (Gider Hesabı) -->
+        <record id="account_template_pos_installment_fee" model="account.account.template">
+            <field name="code">631.01</field>
+            <field name="name">Taksit Farkı Giderleri</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- 320 - POS Borçları (Borç Hesabı) -->
+        <record id="account_template_pos_payable" model="account.account.template">
+            <field name="code">320.01</field>
+            <field name="name">POS Borçları</field>
+            <field name="account_type">liability_payable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <!-- 121 - POS Mutabakat Hesabı -->
+        <record id="account_template_pos_reconciliation" model="account.account.template">
+            <field name="code">121.01</field>
+            <field name="name">POS Mutabakat Hesabı</field>
+            <field name="account_type">asset_current</field>
+        </record>
+
+        <!-- 320.02 - POS İade Hesabı -->
+        <record id="account_template_pos_refund" model="account.account.template">
+            <field name="code">320.02</field>
+            <field name="name">POS İade Hesabı</field>
+            <field name="account_type">liability_payable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <!-- Banka Özel Hesapları -->
+        
+        <!-- Akbank POS Hesapları -->
+        <record id="account_template_akbank_receivable" model="account.account.template">
+            <field name="code">120.01.01</field>
+            <field name="name">Akbank POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_akbank_commission" model="account.account.template">
+            <field name="code">630.01.01</field>
+            <field name="name">Akbank POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Garanti POS Hesapları -->
+        <record id="account_template_garanti_receivable" model="account.account.template">
+            <field name="code">120.01.02</field>
+            <field name="name">Garanti POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_garanti_commission" model="account.account.template">
+            <field name="code">630.01.02</field>
+            <field name="name">Garanti POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- İş Bankası POS Hesapları -->
+        <record id="account_template_isbank_receivable" model="account.account.template">
+            <field name="code">120.01.03</field>
+            <field name="name">İş Bankası POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_isbank_commission" model="account.account.template">
+            <field name="code">630.01.03</field>
+            <field name="name">İş Bankası POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- YKB PosNet Hesapları -->
+        <record id="account_template_ykb_receivable" model="account.account.template">
+            <field name="code">120.01.04</field>
+            <field name="name">Yapı Kredi POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_ykb_commission" model="account.account.template">
+            <field name="code">630.01.04</field>
+            <field name="name">Yapı Kredi POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- QNB Finansbank Hesapları -->
+        <record id="account_template_qnb_receivable" model="account.account.template">
+            <field name="code">120.01.05</field>
+            <field name="name">QNB Finansbank POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_qnb_commission" model="account.account.template">
+            <field name="code">630.01.05</field>
+            <field name="name">QNB Finansbank POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Denizbank Hesapları -->
+        <record id="account_template_denizbank_receivable" model="account.account.template">
+            <field name="code">120.01.06</field>
+            <field name="name">Denizbank POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_denizbank_commission" model="account.account.template">
+            <field name="code">630.01.06</field>
+            <field name="name">Denizbank POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Kuveyt Türk Hesapları -->
+        <record id="account_template_kuveyt_receivable" model="account.account.template">
+            <field name="code">120.01.07</field>
+            <field name="name">Kuveyt Türk POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_kuveyt_commission" model="account.account.template">
+            <field name="code">630.01.07</field>
+            <field name="name">Kuveyt Türk POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Vakıfbank Hesapları -->
+        <record id="account_template_vakifbank_receivable" model="account.account.template">
+            <field name="code">120.01.08</field>
+            <field name="name">Vakıfbank POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_vakifbank_commission" model="account.account.template">
+            <field name="code">630.01.08</field>
+            <field name="name">Vakıfbank POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Ziraat Bankası Hesapları -->
+        <record id="account_template_ziraat_receivable" model="account.account.template">
+            <field name="code">120.01.09</field>
+            <field name="name">Ziraat Bankası POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_ziraat_commission" model="account.account.template">
+            <field name="code">630.01.09</field>
+            <field name="name">Ziraat Bankası POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Halkbank Hesapları -->
+        <record id="account_template_halkbank_receivable" model="account.account.template">
+            <field name="code">120.01.10</field>
+            <field name="name">Halkbank POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_halkbank_commission" model="account.account.template">
+            <field name="code">630.01.10</field>
+            <field name="name">Halkbank POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- TEB Hesapları -->
+        <record id="account_template_teb_receivable" model="account.account.template">
+            <field name="code">120.01.11</field>
+            <field name="name">TEB POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_teb_commission" model="account.account.template">
+            <field name="code">630.01.11</field>
+            <field name="name">TEB POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Şekerbank Hesapları -->
+        <record id="account_template_sekerbank_receivable" model="account.account.template">
+            <field name="code">120.01.12</field>
+            <field name="name">Şekerbank POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_sekerbank_commission" model="account.account.template">
+            <field name="code">630.01.12</field>
+            <field name="name">Şekerbank POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Param POS Hesapları -->
+        <record id="account_template_param_receivable" model="account.account.template">
+            <field name="code">120.01.13</field>
+            <field name="name">Param POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_param_commission" model="account.account.template">
+            <field name="code">630.01.13</field>
+            <field name="name">Param POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Tosla POS Hesapları -->
+        <record id="account_template_tosla_receivable" model="account.account.template">
+            <field name="code">120.01.14</field>
+            <field name="name">Tosla POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_tosla_commission" model="account.account.template">
+            <field name="code">630.01.14</field>
+            <field name="name">Tosla POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Vakıf Katılım Hesapları -->
+        <record id="account_template_vakifkatilim_receivable" model="account.account.template">
+            <field name="code">120.01.15</field>
+            <field name="name">Vakıf Katılım POS Alacakları</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <record id="account_template_vakifkatilim_commission" model="account.account.template">
+            <field name="code">630.01.15</field>
+            <field name="name">Vakıf Katılım POS Komisyonu</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Sekans -->
+        <record id="seq_pos_journal_entry" model="ir.sequence">
+            <field name="name">POS Yevmiye Kaydı</field>
+            <field name="code">pos.journal.entry</field>
+            <field name="prefix">POS-YVK/%(year)s/</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

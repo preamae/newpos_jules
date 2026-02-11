@@ -39,21 +39,21 @@ class PaymentProvider(models.Model):
         ('param', 'Param POS'),
         ('tosla', 'Tosla (AKÖde)'),
     ], ondelete={
-        'akbank': 'set default',
-        'garanti': 'set default',
-        'isbank': 'set default',
-        'ziraat': 'set default',
-        'halkbank': 'set default',
-        'vakifbank': 'set default',
-        'vakifkatilim': 'set default',
-        'yapikredi': 'set default',
-        'finansbank': 'set default',
-        'denizbank': 'set default',
-        'teb': 'set default',
-        'sekerbank': 'set default',
-        'kuveytturk': 'set default',
-        'param': 'set default',
-        'tosla': 'set default',
+        'akbank': 'cascade',
+        'garanti': 'cascade',
+        'isbank': 'cascade',
+        'ziraat': 'cascade',
+        'halkbank': 'cascade',
+        'vakifbank': 'cascade',
+        'vakifkatilim': 'cascade',
+        'yapikredi': 'cascade',
+        'finansbank': 'cascade',
+        'denizbank': 'cascade',
+        'teb': 'cascade',
+        'sekerbank': 'cascade',
+        'kuveytturk': 'cascade',
+        'param': 'cascade',
+        'tosla': 'cascade',
     })
 
     # ==================== GATEWAY TİPİ ====================
@@ -201,6 +201,10 @@ class PaymentProvider(models.Model):
             'taksit': str(card_data.get('installment_count', 0)),
             'currency': self._get_currency_code(transaction.currency_id),
             'rnd': datetime.now().strftime('%Y%m%d%H%M%S'),
+            'pan': card_data.get('card_number', ''),
+            'Eavms_Emonth': card_data.get('expiry_month', ''),
+            'Eavms_Eyear': card_data.get('expiry_year', ''),
+            'cv2': card_data.get('cvv', ''),
         }
         
         # Hash oluştur
@@ -321,6 +325,10 @@ class PaymentProvider(models.Model):
             'OkUrl': return_url,
             'FailUrl': return_url,
             'Rnd': datetime.now().strftime('%Y%m%d%H%M%S'),
+            'CardNumber': card_data.get('card_number', ''),
+            'ExpMonth': card_data.get('expiry_month', ''),
+            'ExpYear': card_data.get('expiry_year', ''),
+            'Cvv2': card_data.get('cvv', ''),
         }
         
         # Hash oluştur
@@ -348,6 +356,10 @@ class PaymentProvider(models.Model):
             'TransactionSecurity': '3' if self.use_3d_secure else '1',
             'OkUrl': return_url,
             'FailUrl': return_url,
+            'CardNumber': card_data.get('card_number', ''),
+            'ExpiryMonth': card_data.get('expiry_month', ''),
+            'ExpiryYear': card_data.get('expiry_year', ''),
+            'CVV2': card_data.get('cvv', ''),
         }
         
         # Hash oluştur
@@ -421,6 +433,10 @@ class PaymentProvider(models.Model):
             'installment': str(card_data.get('installment_count', 0)),
             'successUrl': return_url,
             'failUrl': return_url,
+            'cardNumber': card_data.get('card_number', ''),
+            'expiryMonth': card_data.get('expiry_month', ''),
+            'expiryYear': card_data.get('expiry_year', ''),
+            'cvv': card_data.get('cvv', ''),
         }
         
         return data, order_id
@@ -442,6 +458,9 @@ class PaymentProvider(models.Model):
             'InstallmentCount': str(card_data.get('installment_count', 0)),
             'SuccessUrl': return_url,
             'FailUrl': return_url,
+            'Pan': card_data.get('card_number', ''),
+            'ExpiryDate': f"{card_data.get('expiry_year', '')}{card_data.get('expiry_month', '')}",
+            'Cvv2': card_data.get('cvv', ''),
         }
         
         return data, order_id
@@ -463,6 +482,10 @@ class PaymentProvider(models.Model):
             'InstallmentCount': str(card_data.get('installment_count', 0)),
             'SuccessUrl': return_url,
             'FailUrl': return_url,
+            'CardNumber': card_data.get('card_number', ''),
+            'ExpirationMonth': card_data.get('expiry_month', ''),
+            'ExpirationYear': card_data.get('expiry_year', ''),
+            'CVV2': card_data.get('cvv', ''),
         }
         
         return data, order_id
