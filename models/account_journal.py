@@ -80,6 +80,7 @@ class PosJournalEntry(models.Model):
     
     # İlişkiler
     transaction_id = fields.Many2one('payment.transaction', string='Ödeme İşlemi')
+    company_id = fields.Many2one('res.company', string='Şirket', related='transaction_id.company_id', store=True, readonly=True, index=True)
     provider_id = fields.Many2one(related='transaction_id.provider_id', string='Sağlayıcı', store=True)
     move_id = fields.Many2one('account.move', string='Yevmiye Kaydı', readonly=True)
     

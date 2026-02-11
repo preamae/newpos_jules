@@ -28,6 +28,7 @@ class PosOrder(models.Model):
     
     # İlişkiler
     transaction_id = fields.Many2one('payment.transaction', string='Ödeme İşlemi', required=True)
+    company_id = fields.Many2one('res.company', string='Şirket', related='transaction_id.company_id', store=True, readonly=True, index=True)
     provider_id = fields.Many2one(related='transaction_id.provider_id', string='Sağlayıcı', store=True)
     partner_id = fields.Many2one(related='transaction_id.partner_id', string='Müşteri', store=True)
     sale_order_id = fields.Many2one('sale.order', string='Satış Siparişi')
@@ -178,6 +179,7 @@ class PosOrderLine(models.Model):
     _description = 'POS Sipariş Satırı'
 
     order_id = fields.Many2one('turkey.pos.order', string='Sipariş', required=True, ondelete='cascade')
+    company_id = fields.Many2one('res.company', string='Şirket', related='order_id.company_id', store=True, readonly=True, index=True)
     
     # Ürün Bilgileri
     product_id = fields.Many2one('product.product', string='Ürün', required=True)
@@ -227,6 +229,7 @@ class PosReconciliation(models.Model):
     
     # Sağlayıcı
     provider_id = fields.Many2one('payment.provider', string='Ödeme Sağlayıcısı', required=True)
+    company_id = fields.Many2one('res.company', string='Şirket', related='provider_id.company_id', store=True, readonly=True, index=True)
     
     # Durum
     state = fields.Selection([

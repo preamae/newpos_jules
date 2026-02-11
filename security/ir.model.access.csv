@@ -23,13 +23,13 @@ access_product_category_campaign_user,Kampanya Kullanıcısı,model_product_cate
 access_product_category_campaign_manager,Kampanya Yöneticisi,model_product_category_campaign,turkey_pos_payment.group_pos_manager,1,1,1,0
 access_product_category_campaign_admin,Kampanya Admin,model_product_category_campaign,turkey_pos_payment.group_pos_admin,1,1,1,1
 
-access_pos_order_user,POS Sipariş Kullanıcısı,model_pos_order,turkey_pos_payment.group_pos_user,1,1,1,0
-access_pos_order_manager,POS Sipariş Yöneticisi,model_pos_order,turkey_pos_payment.group_pos_manager,1,1,1,0
-access_pos_order_admin,POS Sipariş Admin,model_pos_order,turkey_pos_payment.group_pos_admin,1,1,1,1
+access_pos_order_user,POS Sipariş Kullanıcısı,model_turkey_pos_order,turkey_pos_payment.group_pos_user,1,1,1,0
+access_pos_order_manager,POS Sipariş Yöneticisi,model_turkey_pos_order,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_order_admin,POS Sipariş Admin,model_turkey_pos_order,turkey_pos_payment.group_pos_admin,1,1,1,1
 
-access_pos_order_line_user,POS Sipariş Satırı Kullanıcısı,model_pos_order_line,turkey_pos_payment.group_pos_user,1,1,1,0
-access_pos_order_line_manager,POS Sipariş Satırı Yöneticisi,model_pos_order_line,turkey_pos_payment.group_pos_manager,1,1,1,0
-access_pos_order_line_admin,POS Sipariş Satırı Admin,model_pos_order_line,turkey_pos_payment.group_pos_admin,1,1,1,1
+access_pos_order_line_user,POS Sipariş Satırı Kullanıcısı,model_turkey_pos_order_line,turkey_pos_payment.group_pos_user,1,1,1,0
+access_pos_order_line_manager,POS Sipariş Satırı Yöneticisi,model_turkey_pos_order_line,turkey_pos_payment.group_pos_manager,1,1,1,0
+access_pos_order_line_admin,POS Sipariş Satırı Admin,model_turkey_pos_order_line,turkey_pos_payment.group_pos_admin,1,1,1,1
 
 access_pos_reconciliation_user,POS Mutabakat Kullanıcısı,model_pos_reconciliation,turkey_pos_payment.group_pos_user,1,0,0,0
 access_pos_reconciliation_manager,POS Mutabakat Yöneticisi,model_pos_reconciliation,turkey_pos_payment.group_pos_manager,1,1,1,0

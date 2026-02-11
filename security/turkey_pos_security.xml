@@ -20,8 +20,29 @@
         <!-- POS Sipariş Şirket Kuralı -->
         <record id="pos_order_rule_company" model="ir.rule">
             <field name="name">POS Sipariş Şirket Kuralı</field>
-            <field name="model_id" ref="turkey_pos_payment.model_pos_order"/>
-            <field name="domain_force">['|', ('transaction_id.company_id', '=', False), ('transaction_id.company_id', 'in', company_ids)]</field>
+            <field name="model_id" ref="model_turkey_pos_order"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- POS Sipariş Satırı Şirket Kuralı -->
+        <record id="pos_order_line_rule_company" model="ir.rule">
+            <field name="name">POS Sipariş Satırı Şirket Kuralı</field>
+            <field name="model_id" ref="model_turkey_pos_order_line"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- POS Mutabakat Şirket Kuralı -->
+        <record id="pos_reconciliation_rule_company" model="ir.rule">
+            <field name="name">POS Mutabakat Şirket Kuralı</field>
+            <field name="model_id" ref="model_pos_reconciliation"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- POS Yevmiye Kaydı Şirket Kuralı -->
+        <record id="pos_journal_entry_rule_company" model="ir.rule">
+            <field name="name">POS Yevmiye Kaydı Şirket Kuralı</field>
+            <field name="model_id" ref="model_pos_journal_entry"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
         </record>
     </data>
 </odoo>
