@@ -86,11 +86,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <field name="gateway_type"/>
-                    <field name="use_3d_secure"/>
-                    <field name="enable_installments"/>
                     <filter string="Türkiye POS" name="turkey_pos" domain="[('code', 'in', ['akbank', 'garanti', 'isbank', 'ziraat', 'halkbank', 'vakifbank', 'vakifkatilim', 'yapikredi', 'finansbank', 'denizbank', 'teb', 'sekerbank', 'kuveytturk', 'param', 'tosla'])]"/>
-                    <filter string="3D Secure Aktif" name="3d_active" domain="[('use_3d_secure', '=', True)]"/>
-                    <filter string="Taksit Aktif" name="installment_active" domain="[('enable_installments', '=', True)]"/>
+                    <filter string="3D Secure Aktif" name="filter_3d_active" domain="[('use_3d_secure', '=', True)]"/>
+                    <filter string="Taksit Aktif" name="filter_installment_active" domain="[('enable_installments', '=', True)]"/>
                     <group expand="0" string="Grup: Türkiye POS">
                         <filter string="Gateway Tipi" name="group_by_gateway" context="{'group_by': 'gateway_type'}"/>
                     </group>

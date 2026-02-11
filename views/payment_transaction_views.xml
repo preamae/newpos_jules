@@ -124,7 +124,7 @@
                     <field name="is_3d_secure"/>
                     <field name="is_refunded"/>
                     <field name="is_cancelled"/>
-                    <filter string="3D Secure" name="3d_secure" domain="[('is_3d_secure', '=', True)]"/>
+                    <filter string="3D Secure" name="filter_3d_secure" domain="[('is_3d_secure', '=', True)]"/>
                     <filter string="Taksitli" name="installment" domain="[('installment_count', '>', 1)]"/>
                     <filter string="İade Edilmiş" name="refunded" domain="[('is_refunded', '=', True)]"/>
                     <filter string="İptal Edilmiş" name="cancelled" domain="[('is_cancelled', '=', True)]"/>

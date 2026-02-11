@@ -124,7 +124,7 @@
                     <field name="code"/>
                     <filter string="Aktif" name="active" domain="[('active', '=', True)]"/>
                     <filter string="Pasif" name="inactive" domain="[('active', '=', False)]"/>
-                    <filter string="3D Secure Destekleyen" name="3d_secure" domain="[('support_3d_secure', '=', True)]"/>
+                    <filter string="3D Secure Destekleyen" name="filter_3d_secure" domain="[('support_3d_secure', '=', True)]"/>
                     <filter string="İade Destekleyen" name="refund" domain="[('support_refund', '=', True)]"/>
                     <group expand="0" string="Grupla">
                         <filter string="Gateway Tipi" name="group_by_type" context="{'group_by': 'gateway_type'}"/>

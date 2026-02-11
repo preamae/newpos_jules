@@ -40,17 +40,19 @@ class TurkeyPosPaymentController(http.Controller):
 
             # Güvenlik Kontrolü: Tutarı doğrula
             # Eğer referans bir Sale Order ise, gerçek tutarı oradan al
+            # Taksit faizi/vade farkı nedeniyle tutar asıl tutardan fazla olabilir, 
+            # ancak asla daha az olmamalıdır.
             sale_order = request.env['sale.order'].sudo().search([('name', '=', reference)], limit=1)
             if sale_order:
-                if request.env.company.currency_id.compare_amounts(amount, sale_order.amount_total) != 0:
-                    _logger.warning("Security Warning: Amount mismatch for reference %s. Client sent %s, expected %s. Using expected amount.", reference, amount, sale_order.amount_total)
+                if request.env.company.currency_id.compare_amounts(amount, sale_order.amount_total) < 0:
+                    _logger.warning("Security Warning: Amount too low for reference %s. Client sent %s, expected at least %s.", reference, amount, sale_order.amount_total)
                     amount = sale_order.amount_total
             else:
                 # Referans bir Invoice (Fatura) olabilir
                 invoice = request.env['account.move'].sudo().search([('name', '=', reference), ('move_type', '=', 'out_invoice')], limit=1)
                 if invoice:
-                    if request.env.company.currency_id.compare_amounts(amount, invoice.amount_total) != 0:
-                        _logger.warning("Security Warning: Amount mismatch for reference %s. Client sent %s, expected %s. Using expected amount.", reference, amount, invoice.amount_total)
+                    if request.env.company.currency_id.compare_amounts(amount, invoice.amount_total) < 0:
+                        _logger.warning("Security Warning: Amount too low for reference %s. Client sent %s, expected at least %s.", reference, amount, invoice.amount_total)
                         amount = invoice.amount_total
 
             # Referans kontrolü - mükerrer veya yanlış tutarlı işlemi önle

@@ -71,6 +71,7 @@ Teknik Özellikler:
         'security/ir.model.access.csv',
         
         # Data
+        'data/account_chart_data.xml',
         'data/payment_provider_data.xml',
         'data/payment_method_data.xml',
         'data/bank_gateway_data.xml',
